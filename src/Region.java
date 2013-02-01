@@ -110,5 +110,9 @@ public class Region {
 
 	public void fireCollisionEvent(CollisionType ct) {
 		owner.collisionEvent(ct);
+		
+		if(ct == CollisionType.TOP) {
+			owner.applyFriction(100);
+		}
 	}
 }

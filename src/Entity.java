@@ -7,8 +7,9 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 	protected short left;
 	protected short right;
 
-	protected int movementSpeed = 2500; // thousands of a pixel
-	protected float movementSpeedMultiplier = 1000;
+	protected int maxMovementSpeed = 5000; // thousands of a pixel
+	protected int movementSpeed;
+	protected int movementSpeedAcceleration = 500;
 	private int decX;
 	private int decY;
 	private int prevX;
@@ -35,19 +36,6 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 	public void addCollisionBox(Region r) {
 		r.setOwner(this);
 		collisionBoxes.add(r);
-	}
-
-	@Override
-	public CollisionType collides(Collidable c) {
-		for (Region r1 : collisionBoxes) {
-			for (Region r2 : c.getCollisionBoxes()) {
-				CollisionType ct= r1.intersects(r2);
-				if (ct != CollisionType.NONE) {
-					return ct;
-				}
-			}
-		}
-		return CollisionType.NONE;
 	}
 
 	public void collisionEvent(CollisionType ct) {
@@ -127,13 +115,19 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 	protected void moveBackY() {
 		y = prevY;
 	}
-
-	@Override
-	public void onCollision(Collidable c) {
-		System.out.println("Collision! [x=" + x + ", y=" + y + ", prevX="
-				+ prevX + ", prevY=" + getPrevY() + "]");
-		moveBackY();
-		currentAccendFrames = 0;
+	
+	public void applyFriction(int amount) {
+		if(movementSpeed < 0) {
+			movementSpeed += amount;
+			if(movementSpeed > 0) {
+				movementSpeed = 0;
+			}
+		} else {
+			movementSpeed -= amount;
+			if(movementSpeed < 0) {
+				movementSpeed = 0;
+			}
+		}
 	}
 
 	@Override
@@ -150,7 +144,10 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 		if (up == 1) {
 			accend();
 		}
-		decX += ((right - left) * movementSpeed * movementSpeedMultiplier) / 1000;
+		movementSpeed += (right - left)*movementSpeedAcceleration;
+		if(Math.abs(movementSpeed) >= maxMovementSpeed)
+			movementSpeed = (right - left)*maxMovementSpeed;
+		decX += movementSpeed;
 		decY += fallSpeed;
 		if (Math.abs(decX) >= 1000 || Math.abs(decY) >= 1000) {
 			prevX = x;

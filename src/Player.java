@@ -13,7 +13,7 @@ public class Player extends Entity implements KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			right = 1;
 		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			movementSpeedMultiplier = 7500;
+			movementSpeed = 7500;
 		}
 	}
 
@@ -28,7 +28,7 @@ public class Player extends Entity implements KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			right = 0;
 		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			movementSpeedMultiplier = 1000;
+			movementSpeed = 1000;
 		}
 	}
 
