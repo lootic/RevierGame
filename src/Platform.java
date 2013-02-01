@@ -34,8 +34,8 @@ public class Platform implements Collidable, Drawable{
 	}
 
 	@Override
-	public Region[] getCollisionBoxes() {
-		return (Region[]) collisionBoxes.toArray(new Region[collisionBoxes.size()]);
+	public Iterable<Region> getCollisionBoxes() {
+		return collisionBoxes;
 	}
 	
 	public void onCollision(Collidable c) {

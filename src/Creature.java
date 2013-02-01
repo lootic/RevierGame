@@ -30,9 +30,8 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 	}
 
 	@Override
-	public Region[] getCollisionBoxes() {
-		return (Region[]) collisionBoxes.toArray(new Region[collisionBoxes
-				.size()]);
+	public Iterable<Region> getCollisionBoxes() {
+		return  collisionBoxes;
 	}
 
 	public int getPrevX() {
