@@ -18,11 +18,13 @@ public class Main {
 		canvas.setDrawingRegions(true);
 		
 		Region r1 = new Region(10,10,20,20);
-		Region r2 = new Region(200,300,2000,200);
+		Region r2 = new Region(600,100,2000,2000);
+		Region r3 = new Region(0,500,2000,200);
 		
 		player.addCollisionBox(r1);
 
 		platform.addCollisionBox(r2);
+		platform.addCollisionBox(r3);
 		
 		physics.registerCreature(player);
 		physics.registerPlatform(platform);

@@ -80,7 +80,7 @@ public class Player extends Creature implements KeyListener {
 	}
 
 	protected void wallCollision() {
-		fallSpeed = 4000;
+		fallSpeed = 2000;
 		canWallJump = true;
 	}
 
