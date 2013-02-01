@@ -23,12 +23,12 @@ public class Region {
 	}
 
 	public boolean isRightOf(Region otherRegion) {
-		return this.prevX() + width > otherRegion.prevX() - otherRegion.width
+		return this.prevX() > otherRegion.prevX() + otherRegion.width
 				+ 1;
 	}
 	
 	public boolean isBelow(Region otherRegion) {
-		return this.prevX() + width > otherRegion.prevX() - otherRegion.width
+		return this.prevY() > otherRegion.prevY() + otherRegion.height
 				+ 1;
 	}
 
