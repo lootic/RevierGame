@@ -1,5 +1,5 @@
 public class Region {
-	private Entity owner;
+	private Creature owner;
 	private int x;
 	private int y;
 	private int width;
@@ -12,7 +12,27 @@ public class Region {
 		this.y = y + this.height;
 	}
 
-	public Region(int x, int y, int width, int height, Entity owner) {
+	public boolean isAbove(Region otherRegion) {
+		return this.prevY() + height < otherRegion.prevY()
+				- otherRegion.height + 1;
+	}
+
+	public boolean isLeftOf(Region otherRegion) {
+		return this.prevX() + width - 1 < otherRegion.prevX()
+				- otherRegion.width;
+	}
+
+	public boolean isRightOf(Region otherRegion) {
+		return this.prevX() + width > otherRegion.prevX() - otherRegion.width
+				+ 1;
+	}
+	
+	public boolean isBelow(Region otherRegion) {
+		return this.prevX() + width > otherRegion.prevX() - otherRegion.width
+				+ 1;
+	}
+
+	public Region(int x, int y, int width, int height, Creature owner) {
 		this(x, y, width, height);
 		this.owner = owner;
 	}
@@ -49,33 +69,16 @@ public class Region {
 		}
 	}
 
-	public void setOwner(Entity owner) {
+	public void setOwner(Creature owner) {
 		this.owner = owner;
 	}
 
-	public CollisionType intersects(Region otherRegion) {
+	public boolean intersects(Region otherRegion) {
 		int vectorX = otherRegion.getCenterX() - this.getCenterX();
 		int vectorY = otherRegion.getCenterY() - this.getCenterY();
 
-		if (this.width + otherRegion.width > Math.abs(vectorX)
-				&& this.height + otherRegion.height > Math.abs(vectorY)) {
-
-			System.out.println("this.prevY=" + (prevY() + height)
-					+ ", otherRegion.prevY=" + (otherRegion.prevY() - height));
-			if ((this.prevY() + height) < otherRegion.prevY()
-					- otherRegion.height+1)
-				return CollisionType.TOP;
-			else if (this.prevX() + width - 1 < otherRegion.prevX()
-					- otherRegion.width)
-				return CollisionType.LEFT;
-			else if (this.prevX() + width > otherRegion.prevX()
-					- otherRegion.width+1)
-				return CollisionType.RIGHT;
-			else
-				return CollisionType.BOTTOM;
-
-		}
-		return CollisionType.NONE;
+		return (this.width + otherRegion.width > Math.abs(vectorX)
+				&& this.height + otherRegion.height > Math.abs(vectorY));
 	}
 
 	private int prevX() {
@@ -93,7 +96,6 @@ public class Region {
 		} else {
 			return y;
 		}
-
 	}
 
 	public int getWidth() {
@@ -102,17 +104,5 @@ public class Region {
 
 	public int getHeight() {
 		return height * 2;
-	}
-
-	public boolean hasSameOwner(Region r) {
-		return this.owner == r.owner;
-	}
-
-	public void fireCollisionEvent(CollisionType ct) {
-		owner.collisionEvent(ct);
-		
-		if(ct == CollisionType.TOP) {
-			owner.applyFriction(100);
-		}
 	}
 }

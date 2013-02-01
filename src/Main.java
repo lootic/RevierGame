@@ -3,28 +3,29 @@ import javax.swing.JFrame;
 public class Main {
 	public static void main(String[] args) {
 		Canvas canvas = new Canvas();
-		Player player = new Player();
-		Entity entity = new Entity();
 		Physics physics = new Physics();
+		Player player = new Player();
+		Platform platform = new Platform();
 		JFrame frame = new JFrame();
 		
 		frame.add(canvas);
 		frame.addKeyListener(player);
+		player.moveX(40);
 		
-		canvas.registerDrawable(entity);
+		canvas.registerDrawable(platform);
 		canvas.registerDrawable(player);
 		canvas.addKeyListener(player);
-		canvas.setDrawingCollisionBoxes(true);
+		canvas.setDrawingRegions(true);
 		
 		Region r1 = new Region(10,10,20,20);
-		Region r2 = new Region(50,300,2000,200);
+		Region r2 = new Region(200,300,2000,200);
 		
 		player.addCollisionBox(r1);
 
-		entity.addCollisionBox(r2);
+		platform.addCollisionBox(r2);
 		
-		physics.registerCollidable(r1);
-		physics.registerCollidable(r2);
+		physics.registerCreature(player);
+		physics.registerPlatform(platform);
 		physics.registerMovable(player);
 		physics.registerWeighing(player);
 		
@@ -45,7 +46,7 @@ public class Main {
 		
 		while(true) {
 			try {
-				Thread.sleep(34);
+				Thread.sleep(17);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

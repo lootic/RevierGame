@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class Canvas extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
-	private boolean isDrawingCollisionBoxes;
+	private boolean isDrawingRegions;
 	
 	public Canvas() {
 	}
@@ -32,7 +32,7 @@ public class Canvas extends JPanel {
 		//redraw everything
 		for(Drawable d : drawables) {
 			g2d.drawImage(d.getSprite(), d.getX(), d.getY(), null);
-			if(isDrawingCollisionBoxes() && d instanceof Collidable) {
+			if(isDrawingRegions() && d instanceof Collidable) {
 				Collidable c = (Collidable) d;
 				for(Region r : c.getCollisionBoxes()){
 					g2d.setColor(Color.YELLOW);
@@ -43,16 +43,16 @@ public class Canvas extends JPanel {
 	}
 	
 
-	public boolean isDrawingCollisionBoxes() {
-		return isDrawingCollisionBoxes;
+	public boolean isDrawingRegions() {
+		return isDrawingRegions;
 	}
 
 	/**
 	 * Debugging tool, sets that all the boxes that determines collision should
 	 * be drawn.
-	 * @param isDrawingCollisionBoxes
+	 * @param isDrawingRegions
 	 */
-	public void setDrawingCollisionBoxes(boolean isDrawingCollisionBoxes) {
-		this.isDrawingCollisionBoxes = isDrawingCollisionBoxes;
+	public void setDrawingRegions(boolean isDrawingRegions) {
+		this.isDrawingRegions = isDrawingRegions;
 	}
 }

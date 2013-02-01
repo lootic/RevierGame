@@ -1,7 +1,7 @@
 import java.awt.Image;
 import java.util.ArrayList;
 
-public class Entity implements Drawable, Movable, Weighing, Collidable {
+public class Creature implements Drawable, Movable, Weighing, Collidable {
 	protected short up;
 	protected short down;
 	protected short left;
@@ -17,41 +17,16 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 	private int x;
 	private int y;
 	private Image sprite; //maybe some AnimationModel class
-	private int weight = 500; // in hgs?
+	private int weight = 50; // in hgs?
 	private int maxFallSpeed = 10000;
-	private int fallSpeed;
-	private short maxAccendFrames = 10;
-	private short currentAccendFrames;
+	protected int fallSpeed;
 
 	private ArrayList<Region> collisionBoxes = new ArrayList<Region>();
-
-	protected void accend() {
-		if (maxAccendFrames > currentAccendFrames) {
-			++currentAccendFrames;
-			this.fallSpeed = -20000;
-		}
-	}
-
+	
 	@Override
 	public void addCollisionBox(Region r) {
 		r.setOwner(this);
 		collisionBoxes.add(r);
-	}
-
-	public void collisionEvent(CollisionType ct) {
-		
-		System.out.println(ct.toString());
-		
-		if(ct == CollisionType.TOP) {
-			moveBackY();
-			land();
-		} else if (ct == CollisionType.LEFT) {
-			moveBackX();
-			slide();
-		} else if (ct == CollisionType.RIGHT) {
-			moveBackX();
-			slide();
-		}
 	}
 
 	@Override
@@ -99,21 +74,17 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 		}
 	}
 	
-	protected void land() {
-		currentAccendFrames = 0;
-	}
-	
 	public void moveBack() {
 		x = prevX;
 		y = prevY;
 	}
 
-	protected void moveBackX() {
-		x = prevX;
+	protected void moveX(int amount) {
+		x += amount;
 	}
 	
-	protected void moveBackY() {
-		y = prevY;
+	protected void moveY(int amount) {
+		y += amount;
 	}
 	
 	public void applyFriction(int amount) {
@@ -141,11 +112,8 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 
 	@Override
 	public void updatePosition() {
-		if (up == 1) {
-			accend();
-		}
 		movementSpeed += (right - left)*movementSpeedAcceleration;
-		if(Math.abs(movementSpeed) >= maxMovementSpeed)
+		if(Math.abs(movementSpeed) > maxMovementSpeed)
 			movementSpeed = (right - left)*maxMovementSpeed;
 		decX += movementSpeed;
 		decY += fallSpeed;
@@ -157,5 +125,12 @@ public class Entity implements Drawable, Movable, Weighing, Collidable {
 			decX %= 1000;
 			decY %= 1000;
 		}
+	}
+
+	protected void groundCollision() {
+		fallSpeed = 0;
+	}
+	
+	protected void wallCollision() {
 	}
 }

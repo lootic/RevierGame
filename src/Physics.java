@@ -4,16 +4,23 @@ public class Physics {
 	private float gravity = 9.82f;
 	private boolean paused = true;
 
-	private ArrayList<Region> regions = new ArrayList<Region>();
-	private ArrayList<Weighing> weighings = new ArrayList<Weighing>(); // yuck, bad name
+	private ArrayList<Creature> creatures = new ArrayList<Creature>();
+	private ArrayList<Platform> platforms = new ArrayList<Platform>();
+	private ArrayList<Weighing> weighings = new ArrayList<Weighing>(); // yuck,
+																		// bad
+																		// name
 	private ArrayList<Movable> movables = new ArrayList<Movable>();
 
 	public void registerWeighing(Weighing w) {
 		weighings.add(w);
 	}
 
-	public void registerCollidable(Region r) {
-		regions.add(r);
+	public void registerCreature(Creature c) {
+		creatures.add(c);
+	}
+
+	public void registerPlatform(Platform p) {
+		platforms.add(p);
 	}
 
 	public void registerMovable(Movable m) {
@@ -24,22 +31,33 @@ public class Physics {
 		if (!isPaused()) {
 			applyMovements();
 			applyGravity();
-			checkCollisions();
+			checkTerrainCollisions();
 		}
 	}
 
-	private void checkCollisions() {
-		for (Region r1 : regions) {
-			for (Region r2 : regions) {
-				if (r1.hasSameOwner(r2)) {
-					continue;
-				} else {
-					r1.fireCollisionEvent(r1.intersects(r2));
-					r2.fireCollisionEvent(r2.intersects(r1));
+	private void checkTerrainCollisions() {
+		for (Platform platform : platforms) {
+			for (Creature creature : creatures) {
+				for (Region platformRegion : platform.getCollisionBoxes()) {
+					for (Region creatureRegion : creature.getCollisionBoxes()) {
+						if (creatureRegion.intersects(platformRegion)) {
+							if (creatureRegion.isAbove(platformRegion)) {
+								creature.moveY(platformRegion.getY()
+										- creatureRegion.getY()
+										- creatureRegion.getHeight());
+								creature.groundCollision();
+								creature.applyFriction(platform.getFriction());
+							} else if (creatureRegion.isLeftOf(platformRegion)) {
+								creature.moveX(platformRegion.getX()
+										- creatureRegion.getX()
+										- creatureRegion.getWidth());
+								creature.wallCollision();
+							}
+						}
+					}
 				}
 			}
 		}
-		System.out.println();
 	}
 
 	private void applyMovements() {
