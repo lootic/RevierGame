@@ -7,7 +7,9 @@ public class Player extends Creature implements KeyListener {
 	private boolean canWallJump;
 	private int dash;
 	private boolean onGround;
-
+	private int numOfFramesLock; //number of frames we are locked in the current animation
+	private AnimationState animationState;
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {

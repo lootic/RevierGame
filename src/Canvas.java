@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-
 public class Canvas extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
