@@ -1,64 +1,69 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Input {
-	private static float upDown;
-	private static float leftRight;
-	private static boolean jump;
-	private static boolean attack;
-	private static boolean sheild;
-	private static boolean dash;
-	private static boolean dodgeLeft;
-	private static boolean dodgeRight;
-	private static boolean rollLeft;
-	private static boolean rollRight;
-	
-	public static void reset(){
-		jump = false;
-		attack = false;
-		sheild = false;
-		dash = false;
-		dodgeLeft = false;
-		dodgeRight = false;
-		rollLeft = false;
-		rollRight = false;
+public class Input implements KeyListener {
+	private static float up;
+	private static float down;
+	private static float left;
+	private static float right;
+
+	// competing actions are using a common variable so that we can choose which
+	// to do next
+	private static InputState inputState;
+	private static InputState prevInputState;
+
+	// private static InputState prevInputState;
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			left = 1;
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			right = 1;
+		}
+
+		if (inputState == null) { // inputState not yet set for this frame
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				inputState = InputState.JUMP;
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			left = 0;
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			right = 0;
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (prevInputState == InputState.JUMP) {
+				prevInputState = null;
+			}
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	public static float getLeftRight() {
+		return right - left;
 	}
 
 	public static float getUpDown() {
-		return upDown;
+		return down - up;
 	}
-	
-	public static float getLeftRight() {
-		return leftRight;
+
+	public static void reset() {
+		// prevInputState = inputState;
+		inputState = null;
 	}
-	
-	public boolean getJump() {
-		return jump;
+
+	public static InputState getState() {
+		return inputState;
 	}
-	
-	public boolean getAttack() {
-		return attack;
-	}
-	
-	public boolean getSheild() {
-		return sheild;
-	}
-	
-	public boolean getDash() {
-		return dash;
-	}
-	
-	public boolean getDodgeLeft() {
-		return dodgeLeft;
-	}
-	
-	public boolean getDodgeRight() {
-		return dodgeRight;
-	}
-	
-	public boolean getRollLeft() {
-		return rollLeft;
-	}
-	
-	public boolean getRollRight() {
-		return rollRight;
+
+	public static InputState getContinuedState() {
+		return prevInputState;
 	}
 }

@@ -51,18 +51,18 @@ public class Physics {
 								creature.moveX(platformRegion.getX()
 										- creatureRegion.getX()
 										- creatureRegion.getWidth());
-								creature.wallCollision();
+								creature.leftCollision();
 							} else if (creatureRegion.isRightOf(platformRegion)) {
 								creature.moveX(platformRegion.getX()
 										+ platformRegion.getWidth()
 										- creatureRegion.getX());
-								creature.wallCollision();
+								creature.rightCollision();
 							} else if (creatureRegion.isBelow(platformRegion)) {
 								System.out.println("below");
 								creature.moveY(platformRegion.getY()
 										+ platformRegion.getHeight()
 										- creatureRegion.getY());
-								creature.wallCollision();
+								creature.roofCollision();
 							}
 						}
 					}

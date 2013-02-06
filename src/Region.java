@@ -1,4 +1,4 @@
-public class Region {
+public class Region implements Sized, Positioned {
 	private Creature owner;
 	private int x;
 	private int y;
@@ -10,26 +10,6 @@ public class Region {
 		this.height = height / 2;
 		this.x = x + this.width;
 		this.y = y + this.height;
-	}
-
-	public boolean isAbove(Region otherRegion) {
-		return this.prevY() + height < otherRegion.prevY()
-				- otherRegion.height + 1;
-	}
-
-	public boolean isLeftOf(Region otherRegion) {
-		return this.prevX() + width - 1 < otherRegion.prevX()
-				- otherRegion.width;
-	}
-
-	public boolean isRightOf(Region otherRegion) {
-		return this.prevX() > otherRegion.prevX() + otherRegion.width
-				+ 1;
-	}
-	
-	public boolean isBelow(Region otherRegion) {
-		return this.prevY() > otherRegion.prevY() + otherRegion.height
-				+ 1;
 	}
 
 	public Region(int x, int y, int width, int height, Creature owner) {
@@ -53,6 +33,17 @@ public class Region {
 		}
 	}
 
+	@Override
+	public int getHeight() {
+		return height * 2;
+	}
+
+	@Override
+	public int getWidth() {
+		return width * 2;
+	}
+
+	@Override
 	public int getX() {
 		if (owner == null) {
 			return x - width;
@@ -61,6 +52,7 @@ public class Region {
 		}
 	}
 
+	@Override
 	public int getY() {
 		if (owner == null) {
 			return y - height;
@@ -69,20 +61,34 @@ public class Region {
 		}
 	}
 
-	public void setOwner(Creature owner) {
-		this.owner = owner;
-	}
-
 	public boolean intersects(Region otherRegion) {
 		int vectorX = otherRegion.getCenterX() - this.getCenterX();
 		int vectorY = otherRegion.getCenterY() - this.getCenterY();
 
-		return (this.width + otherRegion.width > Math.abs(vectorX)
-				&& this.height + otherRegion.height > Math.abs(vectorY));
+		return (this.width + otherRegion.width > Math.abs(vectorX) && this.height
+				+ otherRegion.height > Math.abs(vectorY));
 	}
 
-	private int prevX() {
+	public boolean isAbove(Region otherRegion) {
+		return this.getPrevY() + height < otherRegion.getPrevY()
+				- otherRegion.height + 1;
+	}
 
+	public boolean isBelow(Region otherRegion) {
+		return this.getPrevY() > otherRegion.getPrevY() + otherRegion.height
+				+ 1;
+	}
+
+	public boolean isLeftOf(Region otherRegion) {
+		return this.getPrevX() + width - 1 < otherRegion.getPrevX()
+				- otherRegion.width;
+	}
+
+	public boolean isRightOf(Region otherRegion) {
+		return this.getPrevX() > otherRegion.getPrevX() + otherRegion.width + 1;
+	}
+
+	private int getPrevX() {
 		if (owner != null) {
 			return owner.getPrevX() + this.x;
 		} else {
@@ -90,7 +96,7 @@ public class Region {
 		}
 	}
 
-	private int prevY() {
+	private int getPrevY() {
 		if (owner != null) {
 			return owner.getPrevY() + this.y;
 		} else {
@@ -98,11 +104,7 @@ public class Region {
 		}
 	}
 
-	public int getWidth() {
-		return width * 2;
-	}
-
-	public int getHeight() {
-		return height * 2;
+	public void setOwner(Creature owner) {
+		this.owner = owner;
 	}
 }

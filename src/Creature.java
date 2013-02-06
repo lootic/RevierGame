@@ -10,15 +10,15 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 	protected int maxMovementSpeed = 5000; // thousands of a pixel
 	protected int movementSpeed;
 	protected int movementSpeedAcceleration = 500;
-	private int decX;
-	private int decY;
-	private int prevX;
-	private int prevY;
-	private int x;
-	private int y;
-	private Image sprite; //maybe some AnimationModel class
-	private int weight = 50; // in hgs?
-	private int maxFallSpeed = 10000;
+	protected int decX;
+	protected int decY;
+	protected int prevX;
+	protected int prevY;
+	protected int x;
+	protected int y;
+	protected Image sprite; //maybe some AnimationModel class
+	protected int weight = 50; // in hgs?
+	protected int maxFallSpeed = 10000;
 	protected int fallSpeed;
 
 	private ArrayList<Region> collisionBoxes = new ArrayList<Region>();
@@ -105,10 +105,6 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 		this.sprite = image;
 	}
 
-	protected void slide() {
-		fallSpeed = 2000;
-	}
-
 	@Override
 	public void updatePosition() {
 		movementSpeed += (right - left)*movementSpeedAcceleration;
@@ -130,6 +126,16 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 		fallSpeed = 0;
 	}
 	
-	protected void wallCollision() {
+	protected void leftCollision() {
+		movementSpeed = 100;
+	}
+	
+	protected void rightCollision() {
+		movementSpeed = -100;
+	}
+
+
+	public void roofCollision() {
+		fallSpeed = 0;
 	}
 }

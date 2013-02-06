@@ -9,12 +9,11 @@ public class Main {
 		JFrame frame = new JFrame();
 
 		frame.add(canvas);
-		frame.addKeyListener(player);
+		frame.addKeyListener(new Input());
 		player.moveX(40);
 
 		canvas.registerDrawable(platform);
 		canvas.registerDrawable(player);
-		canvas.addKeyListener(player);
 		canvas.setDrawingRegions(true);
 
 		Region r1 = new Region(10, 10, 20, 20);
@@ -58,6 +57,7 @@ public class Main {
 			}
 			canvas.update();
 			physics.update();
+			Input.reset();
 		}
 
 	}
