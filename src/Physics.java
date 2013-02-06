@@ -4,70 +4,21 @@ public class Physics {
 	private float gravity = 9.82f;
 	private boolean paused = true;
 
-	private ArrayList<Creature> creatures = new ArrayList<Creature>();
-	private ArrayList<Platform> platforms = new ArrayList<Platform>();
-	private ArrayList<Weighing> weighings = new ArrayList<Weighing>(); // yuck,
-																		// bad
-																		// name
+	/**
+	 * Colliding regions that collide with everything including among themselves.
+	 */
+	private ArrayList<Region> dynamicColliders = new ArrayList<Region>();
+	
+	/**
+	 * Colliding regions that doesnt collide with each other but 
+	 */
+	private ArrayList<Region> staticColliders = new ArrayList<Region>();
+	private ArrayList<Weighing> weighings = new ArrayList<Weighing>();
 	private ArrayList<Movable> movables = new ArrayList<Movable>();
 
-	public void registerWeighing(Weighing w) {
-		weighings.add(w);
-	}
-
-	public void registerCreature(Creature c) {
-		creatures.add(c);
-	}
-
-	public void registerPlatform(Platform p) {
-		platforms.add(p);
-	}
-
-	public void registerMovable(Movable m) {
-		movables.add(m);
-	}
-
-	public void update() {
-		if (!isPaused()) {
-			applyMovements();
-			applyGravity();
-			checkTerrainCollisions();
-		}
-	}
-
-	private void checkTerrainCollisions() {
-		for (Platform platform : platforms) {
-			for (Creature creature : creatures) {
-				for (Region platformRegion : platform.getCollisionBoxes()) {
-					for (Region creatureRegion : creature.getCollisionBoxes()) {
-						if (creatureRegion.intersects(platformRegion)) {
-							if (creatureRegion.isAbove(platformRegion)) {
-								creature.moveY(platformRegion.getY()
-										- creatureRegion.getY()
-										- creatureRegion.getHeight());
-								creature.groundCollision();
-								creature.applyFriction(platform.getFriction());
-							} else if (creatureRegion.isLeftOf(platformRegion)) {
-								creature.moveX(platformRegion.getX()
-										- creatureRegion.getX()
-										- creatureRegion.getWidth());
-								creature.leftCollision();
-							} else if (creatureRegion.isRightOf(platformRegion)) {
-								creature.moveX(platformRegion.getX()
-										+ platformRegion.getWidth()
-										- creatureRegion.getX());
-								creature.rightCollision();
-							} else if (creatureRegion.isBelow(platformRegion)) {
-								System.out.println("below");
-								creature.moveY(platformRegion.getY()
-										+ platformRegion.getHeight()
-										- creatureRegion.getY());
-								creature.roofCollision();
-							}
-						}
-					}
-				}
-			}
+	private void applyGravity() {
+		for (Weighing w : weighings) {
+			w.increaseFallSpeed((int) (gravity * w.getWeight()));
 		}
 	}
 
@@ -77,9 +28,33 @@ public class Physics {
 		}
 	}
 
-	private void applyGravity() {
-		for (Weighing w : weighings) {
-			w.increaseFallSpeed((int) (gravity * w.getWeight()));
+	private void checkTerrainCollisions() {
+		for (Region<Platform> platformRegion : staticColliders) {
+			for (Region<Creature> creatureRegion : dynamicColliders) {
+				if (creatureRegion.intersects(platformRegion)) {
+					if (creatureRegion.isAbove(platformRegion)) {
+						creatureRegion.getCollisionAction().collisionGround(
+								creatureRegion, platformRegion);
+						platformRegion.getCollisionAction().collisionRoof(
+								platformRegion, creatureRegion);
+					} else if (creatureRegion.isLeftOf(platformRegion)) {
+						creatureRegion.getCollisionAction().collisionLeft(
+								creatureRegion, platformRegion);
+						platformRegion.getCollisionAction().collisionRight(
+								platformRegion, creatureRegion);
+					} else if (creatureRegion.isRightOf(platformRegion)) {
+						creatureRegion.getCollisionAction().collisionRight(
+								creatureRegion, platformRegion);
+						platformRegion.getCollisionAction().collisionLeft(
+								platformRegion, creatureRegion);
+					} else if (creatureRegion.isBelow(platformRegion)) {
+						creatureRegion.getCollisionAction().collisionRoof(
+								creatureRegion, platformRegion);
+						platformRegion.getCollisionAction().collisionGround(
+								platformRegion, creatureRegion);
+					}
+				}
+			}
 		}
 	}
 
@@ -87,7 +62,50 @@ public class Physics {
 		return paused;
 	}
 
+	public void registerCreature(Creature creature) {
+		for(Region region : creature.getHurtBoxes()) {
+			//lol
+		}
+		
+		for(Region region : creature.getCollisionBoxes()) {
+			registerDynamicCollider(region);
+		}
+		
+		registerMovable(creature);
+		registerWeighing(creature);
+	}
+
+	public void registerDynamicCollider(Region region) {
+		dynamicColliders.add(region);
+	}
+
+	public void registerMovable(Movable m) {
+		movables.add(m);
+	}
+
+	public void registerPlatform(Platform platform) {
+		for(Region region : platform.getCollisionBoxes()) {
+			registerStaticCollider(region);
+		}
+	}
+
+	public void registerStaticCollider(Region region) {
+		staticColliders.add(region);
+	}
+
+	public void registerWeighing(Weighing w) {
+		weighings.add(w);
+	}
+
 	public void setPaused(boolean paused) {
 		this.paused = paused;
+	}
+	
+	public void update() {
+		if (!isPaused()) {
+			applyMovements();
+			applyGravity();
+			checkTerrainCollisions();
+		}
 	}
 }

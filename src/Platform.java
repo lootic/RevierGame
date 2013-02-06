@@ -1,14 +1,13 @@
 import java.awt.Image;
 import java.util.ArrayList;
 
-
-public class Platform implements Collidable, Drawable{
+public class Platform implements Collidable, Positioned, Drawable {
 
 	private int x;
 	private int y;
-	private ArrayList<Region> collisionBoxes = new ArrayList<Region>();
-	private int friction = 700;
-	
+	private ArrayList<Region<Platform>> collisionBoxes = new ArrayList<Region<Platform>>();
+	private int friction = 20;
+
 	@Override
 	public int getX() {
 		return x;
@@ -25,26 +24,33 @@ public class Platform implements Collidable, Drawable{
 	}
 
 	@Override
-	public void setSprite(Image image) {		
+	public void setSprite(Image image) {
 	}
 
 	@Override
-	public void addCollisionBox(Region r) {
+	public void addCollisionBox(Region<Platform> r) {
+		r.setOwner(this);
+		r.setCollisionAction(Region.FRICTION); 
 		collisionBoxes.add(r);
 	}
 
-	@Override
-	public Iterable<Region> getCollisionBoxes() {
+	@Override 
+	public Iterable<Region<Platform>> getCollisionBoxes() {
 		return collisionBoxes;
-	}
-	
-	public void onCollision(Collidable c) {
-		//in general this is implemented empty, unless we want a springboard or
-		//a damage effect
 	}
 
 	public int getFriction() {
-		return friction ;
+		return friction;
+	}
+
+	@Override
+	public int getPrevY() {
+		return y;
+	}
+
+	@Override
+	public int getPrevX() {
+		return x;
 	}
 
 }

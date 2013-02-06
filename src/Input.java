@@ -59,11 +59,11 @@ public class Input implements KeyListener {
 		inputState = null;
 	}
 
-	public static InputState getState() {
+	public static InputState getInputState() {
 		return inputState;
 	}
 
-	public static InputState getContinuedState() {
+	public static InputState getPreviousInputState() {
 		return prevInputState;
 	}
 }

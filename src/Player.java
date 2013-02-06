@@ -8,9 +8,9 @@ public class Player extends Creature {
 		if (numOfFramesLock > 0) {
 			--numOfFramesLock;
 		} else {
-			inputState = Input.getContinuedState();
+			inputState = Input.getPreviousInputState();
 			if (inputState == null) {
-				inputState = Input.getState();
+				inputState = Input.getInputState();
 			}
 			if (inputState == InputState.JUMP) {
 				if (jumpState == JumpState.CAN_LEFT_WALLJUMP)
@@ -47,11 +47,6 @@ public class Player extends Creature {
 			decX %= 1000;
 			decY %= 1000;
 		}
-
-		/*
-		 * System.out.println("ms=" + movementSpeed + " decX=" + decX + " decY="
-		 * + decY);
-		 */
 	}
 
 	private void jump() {
@@ -72,22 +67,5 @@ public class Player extends Creature {
 		numOfFramesLock = 6;
 		fallSpeed = -8800;
 		jumpState = JumpState.CAN_NOT_JUMP;
-	}
-
-	protected void groundCollision() {
-		super.groundCollision();
-		jumpState = JumpState.CAN_JUMP;
-	}
-
-	protected void leftCollision() {
-		super.leftCollision();
-		fallSpeed = 2000;
-		jumpState = JumpState.CAN_LEFT_WALLJUMP;
-	}
-
-	protected void rightCollision() {
-		super.rightCollision();
-		fallSpeed = 2000;
-		jumpState = JumpState.CAN_RIGHT_WALLJUMP;
 	}
 }

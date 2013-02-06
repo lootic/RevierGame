@@ -1,7 +1,8 @@
 import java.awt.Image;
 import java.util.ArrayList;
 
-public class Creature implements Drawable, Movable, Weighing, Collidable {
+public class Creature implements Drawable, Movable, Weighing, Collidable,
+		Destructable {
 	protected short up;
 	protected short down;
 	protected short left;
@@ -16,22 +17,24 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 	protected int prevY;
 	protected int x;
 	protected int y;
-	protected Image sprite; //maybe some AnimationModel class
+	protected Image sprite; // maybe some AnimationModel class
 	protected int weight = 50; // in hgs?
 	protected int maxFallSpeed = 10000;
 	protected int fallSpeed;
 
-	private ArrayList<Region> collisionBoxes = new ArrayList<Region>();
-	
+	private ArrayList<Region<Creature>> collisionBoxes = new ArrayList<Region<Creature>>();
+	private ArrayList<Region<Creature>> hurtBoxes = new ArrayList<Region<Creature>>();
+
 	@Override
-	public void addCollisionBox(Region r) {
+	public void addCollisionBox(Region<Creature> r) {
 		r.setOwner(this);
+		r.setCollisionAction(Region.MOVE_BACK);
 		collisionBoxes.add(r);
 	}
 
 	@Override
-	public Iterable<Region> getCollisionBoxes() {
-		return  collisionBoxes;
+	public Iterable<Region<Creature>> getCollisionBoxes() {
+		return collisionBoxes;
 	}
 
 	public int getPrevX() {
@@ -72,29 +75,30 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 			fallSpeed += increase;
 		}
 	}
-	
+
 	public void moveBack() {
 		x = prevX;
 		y = prevY;
 	}
 
-	protected void moveX(int amount) {
+	
+	public void moveX(int amount) {
 		x += amount;
 	}
-	
-	protected void moveY(int amount) {
+
+	public void moveY(int amount) {
 		y += amount;
 	}
-	
+
 	public void applyFriction(int amount) {
-		if(movementSpeed < 0) {
+		if (movementSpeed < 0) {
 			movementSpeed += amount;
-			if(movementSpeed > 0) {
+			if (movementSpeed > 0) {
 				movementSpeed = 0;
 			}
 		} else {
 			movementSpeed -= amount;
-			if(movementSpeed < 0) {
+			if (movementSpeed < 0) {
 				movementSpeed = 0;
 			}
 		}
@@ -107,9 +111,9 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 
 	@Override
 	public void updatePosition() {
-		movementSpeed += (right - left)*movementSpeedAcceleration;
-		if(Math.abs(movementSpeed) > maxMovementSpeed)
-			movementSpeed = (right - left)*maxMovementSpeed;
+		movementSpeed += (right - left) * movementSpeedAcceleration;
+		if (Math.abs(movementSpeed) > maxMovementSpeed)
+			movementSpeed = (right - left) * maxMovementSpeed;
 		decX += movementSpeed;
 		decY += fallSpeed;
 		if (Math.abs(decX) >= 1000 || Math.abs(decY) >= 1000) {
@@ -122,20 +126,20 @@ public class Creature implements Drawable, Movable, Weighing, Collidable {
 		}
 	}
 
-	protected void groundCollision() {
-		fallSpeed = 0;
-	}
-	
-	protected void leftCollision() {
-		movementSpeed = 100;
-	}
-	
-	protected void rightCollision() {
-		movementSpeed = -100;
+	@Override
+	public void destroy() {
+		hurtBoxes.clear();
+		collisionBoxes.clear();
 	}
 
+	@Override
+	public Iterable<Region> getHurtBoxes() {
+		return hurtBoxes;
+	}
 
-	public void roofCollision() {
-		fallSpeed = 0;
+	@Override
+	public void addHurtBox(Region hurtBox) {
+		hurtBox.setOwner(this);
+		hurtBoxes.add(hurtBox);
 	}
 }
