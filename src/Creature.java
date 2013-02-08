@@ -1,8 +1,7 @@
 import java.awt.Image;
 import java.util.ArrayList;
 
-public class Creature implements Drawable, Movable, Weighing, Collidable,
-		Destructable {
+public class Creature implements Drawable, Movable, Weighing, Collidable<Creature> {
 	protected short up;
 	protected short down;
 	protected short left;
@@ -124,22 +123,5 @@ public class Creature implements Drawable, Movable, Weighing, Collidable,
 			decX %= 1000;
 			decY %= 1000;
 		}
-	}
-
-	@Override
-	public void destroy() {
-		hurtBoxes.clear();
-		collisionBoxes.clear();
-	}
-
-	@Override
-	public Iterable<Region> getHurtBoxes() {
-		return hurtBoxes;
-	}
-
-	@Override
-	public void addHurtBox(Region hurtBox) {
-		hurtBox.setOwner(this);
-		hurtBoxes.add(hurtBox);
 	}
 }

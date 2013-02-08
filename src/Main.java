@@ -27,7 +27,7 @@ public class Main {
 		Region<Platform> r5 = new Region<Platform>(400, 270, 50, 20);
 
 		creature.addCollisionBox(r6);
-		creature.addHurtBox(r7);
+		//creature.addHurtBox(r7);
 		player.addCollisionBox(r1);
 
 		platform.addCollisionBox(r2);

@@ -68,4 +68,18 @@ public class Player extends Creature {
 		fallSpeed = -8800;
 		jumpState = JumpState.CAN_NOT_JUMP;
 	}
+
+	public JumpState getJumpState() {
+		return jumpState;
+	}
+
+	public void setJumpState(JumpState jumpState) {
+		this.jumpState = jumpState;
+	}
+	
+	@Override
+	public void addCollisionBox(Region<Creature> r) {
+		super.addCollisionBox(r);
+		//r.setCollisionAction(Region.MOVE_BACK);
+	}
 }

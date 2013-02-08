@@ -1,4 +1,4 @@
-public interface Collidable extends Positioned {
-	public void addCollisionBox(Region<? extends Collidable> r);
-	public Iterable<Region<? extends Collidable>> getCollisionBoxes();
+public interface Collidable<T extends Collidable<?>> extends Positioned {
+	public void addCollisionBox(Region<T> region);
+	public Iterable<Region<T>> getCollisionBoxes();
 }

@@ -4,90 +4,46 @@ public class Region<OwnerType extends Positioned> implements Sized, Positioned {
 	private int y;
 	private int width;
 	private int height;
-	
-	private CollisionAction<?, ?> collisionAction = NO_ACTION;
+
+	private CollisionAction<? extends Positioned, ? extends Positioned> collisionAction = NO_ACTION;
 
 	public static final CollisionAction<Positioned, Positioned> NO_ACTION = new CollisionAction<Positioned, Positioned>() {
-
-		@Override
-		public void collisionGround(Region<Positioned> thisRegion,
-				Region<Positioned> otherRegion) {
-		}
-
-		@Override
-		public void collisionRoof(Region<Positioned> thisRegion,
-				Region<Positioned> otherRegion) {
-		}
-
-		@Override
-		public void collisionLeft(Region<Positioned> thisRegion,
-				Region<Positioned> otherRegion) {
-		}
-
-		@Override
-		public void collisionRight(Region<Positioned> thisRegion,
+		public void onCollision(Region<Positioned> thisRegion,
 				Region<Positioned> otherRegion) {
 		}
 	};
 
 	public static final CollisionAction<Platform, Creature> FRICTION = new CollisionAction<Platform, Creature>() {
-
-		@Override
-		public void collisionGround(Region<Platform> thisRegion,
+		public void onCollision(Region<Platform> thisRegion,
 				Region<Creature> otherRegion) {
 			otherRegion.owner.applyFriction(thisRegion.owner.getFriction());
 		}
-
-		@Override
-		public void collisionRoof(Region<Platform> thisRegion,
-				Region<Creature> otherRegion) {
-			otherRegion.owner.applyFriction(thisRegion.owner.getFriction());
-		}
-
-		@Override
-		public void collisionLeft(Region<Platform> thisRegion,
-				Region<Creature> otherRegion) {
-			otherRegion.owner.applyFriction(thisRegion.owner.getFriction());
-		}
-
-		@Override
-		public void collisionRight(Region<Platform> thisRegion,
-				Region<Creature> otherRegion) {
-			otherRegion.owner.applyFriction(thisRegion.owner.getFriction());
-		}
-
 	};
 
-	public static final CollisionAction<Movable, Positioned> MOVE_BACK = new CollisionAction<Movable, Positioned>() {
-
-		@Override
-		public void collisionRoof(Region<Movable> thisRegion,
-				Region<Positioned> otherRegion) {
-			thisRegion.owner.moveY(otherRegion.getY() + otherRegion.getHeight()
-					- thisRegion.getY());
-		}
-
-		@Override
-		public void collisionRight(Region<Movable> thisRegion,
-				Region<Positioned> otherRegion) {
-			thisRegion.owner.moveX(otherRegion.getX() + otherRegion.getWidth()
-					- thisRegion.getX());
-		}
-
-		@Override
-		public void collisionLeft(Region<Movable> thisRegion,
-				Region<Positioned> otherRegion) {
-			thisRegion.owner.moveX(otherRegion.getX() - thisRegion.getX()
-					- thisRegion.getWidth());
-		}
-
-		@Override
-		public void collisionGround(Region<Movable> thisRegion,
-				Region<Positioned> otherRegion) {
-			((Movable) thisRegion.owner).moveY(otherRegion.getY()
-					- thisRegion.getY() - thisRegion.getHeight());
-		}
-	};
+	/*
+	 * public static final CollisionAction<Movable, Positioned> MOVE_BACK = new
+	 * CollisionAction<Movable, Positioned>() {
+	 * 
+	 * @Override public void collisionRoof(Region<Movable> thisRegion,
+	 * Region<Positioned> otherRegion) {
+	 * thisRegion.owner.moveY(otherRegion.getY() + otherRegion.getHeight() -
+	 * thisRegion.getY()); }
+	 * 
+	 * @Override public void collisionRight(Region<Movable> thisRegion,
+	 * Region<Positioned> otherRegion) {
+	 * thisRegion.owner.moveX(otherRegion.getX() + otherRegion.getWidth() -
+	 * thisRegion.getX()); }
+	 * 
+	 * @Override public void collisionLeft(Region<Movable> thisRegion,
+	 * Region<Positioned> otherRegion) {
+	 * thisRegion.owner.moveX(otherRegion.getX() - thisRegion.getX() -
+	 * thisRegion.getWidth()); }
+	 * 
+	 * @Override public void collisionGround(Region<Movable> thisRegion,
+	 * Region<Positioned> otherRegion) {
+	 * thisRegion.owner.moveY(otherRegion.getY() - thisRegion.getY() -
+	 * thisRegion.getHeight()); } };
+	 */
 
 	public Region(int x, int y, int width, int height) {
 		this.width = width / 2;
@@ -193,11 +149,11 @@ public class Region<OwnerType extends Positioned> implements Sized, Positioned {
 	}
 
 	public void setCollisionAction(
-			CollisionAction<?, ?> collisionAction) {
+			CollisionAction<? extends Positioned, ? extends Positioned> collisionAction) {
 		this.collisionAction = collisionAction;
 	}
 
-	public CollisionAction<?, ?> getCollisionAction() {
+	public CollisionAction<? extends Positioned, ? extends Positioned> getCollisionAction() {
 		return collisionAction;
 	}
 }

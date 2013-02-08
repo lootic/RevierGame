@@ -1,12 +1,12 @@
 import java.awt.Image;
 import java.util.ArrayList;
 
-public class Platform implements Collidable, Positioned, Drawable {
+public class Platform implements Collidable<Platform>, Positioned, Drawable {
 
 	private int x;
 	private int y;
 	private ArrayList<Region<Platform>> collisionBoxes = new ArrayList<Region<Platform>>();
-	private int friction = 20;
+	private int friction = 100;
 
 	@Override
 	public int getX() {
