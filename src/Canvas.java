@@ -33,20 +33,20 @@ public class Canvas extends JPanel {
 			g2d.drawImage(d.getSprite(), d.getX(), d.getY(), null);
 			if (isDrawingRegions() && d instanceof Collidable) {
 				Collidable c = (Collidable) d;
-				for (Region<?> r : c.getCollisionBoxes()) {
+				for (Region r : c.getCollisionBoxes()) {
 					g2d.setColor(Color.YELLOW);
 					g2d.drawRect((int) r.getX(), (int) r.getY(), r.getWidth(),
 							r.getHeight());
 				}
 			}
-			if (d instanceof Destructable) {
-				Destructable dest = (Destructable) d;
-				for (Region r : dest.getHurtBoxes()) {
-					g2d.setColor(Color.RED);
-					g2d.drawRect((int) r.getX(), (int) r.getY(), r.getWidth(),
-							r.getHeight());
-				}
-			}
+//			if (d instanceof Destructable) {
+//				Destructable dest = (Destructable) d;
+//				for (Region r : dest.getHurtBoxes()) {
+//					g2d.setColor(Color.RED);
+//					g2d.drawRect((int) r.getX(), (int) r.getY(), r.getWidth(),
+//							r.getHeight());
+//				}
+//			}
 		}
 
 	}

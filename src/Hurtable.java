@@ -1,6 +1,6 @@
 
-public interface Destructable {
+public interface Hurtable {
 	public Iterable<Region> getHurtBoxes();
 	public void addHurtBox(Region hurtBox);
-	void destroy();
+	public void onDamage(Hurting hurter);
 }

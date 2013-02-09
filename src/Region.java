@@ -1,24 +1,9 @@
-public class Region<OwnerType extends Positioned> implements Sized, Positioned {
-	private OwnerType owner;
+public class Region implements Sized, Positioned {
+	private Positioned owner;
 	private int x;
 	private int y;
 	private int width;
 	private int height;
-
-	private CollisionAction<? extends Positioned, ? extends Positioned> collisionAction = NO_ACTION;
-
-	public static final CollisionAction<Positioned, Positioned> NO_ACTION = new CollisionAction<Positioned, Positioned>() {
-		public void onCollision(Region<Positioned> thisRegion,
-				Region<Positioned> otherRegion) {
-		}
-	};
-
-	public static final CollisionAction<Platform, Creature> FRICTION = new CollisionAction<Platform, Creature>() {
-		public void onCollision(Region<Platform> thisRegion,
-				Region<Creature> otherRegion) {
-			otherRegion.owner.applyFriction(thisRegion.owner.getFriction());
-		}
-	};
 
 	/*
 	 * public static final CollisionAction<Movable, Positioned> MOVE_BACK = new
@@ -52,9 +37,8 @@ public class Region<OwnerType extends Positioned> implements Sized, Positioned {
 		this.y = y + this.height;
 	}
 
-	public Region(int x, int y, int width, int height, OwnerType owner) {
+	public Region(int x, int y, int width, int height, Positioned owner) {
 		this(x, y, width, height);
-		this.owner = owner;
 	}
 
 	private int getCenterX() {
@@ -101,7 +85,7 @@ public class Region<OwnerType extends Positioned> implements Sized, Positioned {
 		}
 	}
 
-	public boolean intersects(Region<?> otherRegion) {
+	public boolean intersects(Region otherRegion) {
 		int vectorX = otherRegion.getCenterX() - this.getCenterX();
 		int vectorY = otherRegion.getCenterY() - this.getCenterY();
 
@@ -109,22 +93,22 @@ public class Region<OwnerType extends Positioned> implements Sized, Positioned {
 				+ otherRegion.height > Math.abs(vectorY));
 	}
 
-	public boolean isAbove(Region<?> otherRegion) {
+	public boolean isAbove(Region otherRegion) {
 		return this.getPrevY() + height < otherRegion.getPrevY()
 				- otherRegion.height + 1;
 	}
 
-	public boolean isBelow(Region<?> otherRegion) {
+	public boolean isBelow(Region otherRegion) {
 		return this.getPrevY() > otherRegion.getPrevY() + otherRegion.height
 				+ 1;
 	}
 
-	public boolean isLeftOf(Region<?> otherRegion) {
+	public boolean isLeftOf(Region otherRegion) {
 		return this.getPrevX() + width - 1 < otherRegion.getPrevX()
 				- otherRegion.width;
 	}
 
-	public boolean isRightOf(Region<?> otherRegion) {
+	public boolean isRightOf(Region otherRegion) {
 		return this.getPrevX() > otherRegion.getPrevX() + otherRegion.width + 1;
 	}
 
@@ -144,16 +128,7 @@ public class Region<OwnerType extends Positioned> implements Sized, Positioned {
 		}
 	}
 
-	public void setOwner(OwnerType owner) {
+	public void setOwner(Positioned owner) {
 		this.owner = owner;
-	}
-
-	public void setCollisionAction(
-			CollisionAction<? extends Positioned, ? extends Positioned> collisionAction) {
-		this.collisionAction = collisionAction;
-	}
-
-	public CollisionAction<? extends Positioned, ? extends Positioned> getCollisionAction() {
-		return collisionAction;
 	}
 }

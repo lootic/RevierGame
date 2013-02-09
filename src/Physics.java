@@ -8,12 +8,12 @@ public class Physics {
 	 * Colliding regions that collide with everything including among
 	 * themselves.
 	 */
-	private ArrayList<Region<Creature>> dynamicColliders = new ArrayList<Region<Creature>>();
+	private ArrayList<Region> dynamicColliders = new ArrayList<Region>();
 
 	/**
 	 * Colliding regions that doesnt collide with each other but
 	 */
-	private ArrayList<Region<Platform>> staticColliders = new ArrayList<Region<Platform>>();
+	private ArrayList<Region> staticColliders = new ArrayList<Region>();
 	private ArrayList<Weighing> weighings = new ArrayList<Weighing>();
 	private ArrayList<Movable> movables = new ArrayList<Movable>();
 
@@ -30,13 +30,9 @@ public class Physics {
 	}
 
 	private void checkTerrainCollisions() {
-		for (Region<Platform> platformRegion : staticColliders) {
-			for (Region<Creature> creatureRegion : dynamicColliders) {
+		for (Region platformRegion : staticColliders) {
+			for (Region creatureRegion : dynamicColliders) {
 				if (creatureRegion.intersects(platformRegion)) {
-					creatureRegion.getCollisionAction().onCollision(
-							creatureRegion, platformRegion);
-					platformRegion.getCollisionAction().onCollision(
-							creatureRegion, platformRegion);
 				}
 			}
 		}
@@ -47,10 +43,9 @@ public class Physics {
 	}
 
 	public void registerCreature(Creature creature) {
-		for (Region<Creature> region : creature.getCollisionBoxes()) {
+		for (Region region : creature.getCollisionBoxes()) {
 			registerDynamicCollider(region);
 		}
-
 		registerMovable(creature);
 		registerWeighing(creature);
 	}
