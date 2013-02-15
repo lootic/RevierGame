@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import lootic.game.Creature;
 import lootic.game.Region;
 import lootic.game.interfaces.Collidable;
+import lootic.game.interfaces.Looping;
 import lootic.game.interfaces.Movable;
 import lootic.game.interfaces.Weighing;
 
-public class Physics {
+public class Physics implements Looping{
 	private float gravity = 9.82f;
 	private boolean isPaused = true;
 
@@ -79,11 +80,12 @@ public class Physics {
 		this.isPaused = paused;
 	}
 
-	public void update() {
+	public void nextIteration() {
 		if (!isPaused()) {
 			applyMovements();
 			applyGravity();
 			checkTerrainCollisions();
 		}
 	}
+
 }

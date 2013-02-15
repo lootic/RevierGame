@@ -1,7 +1,7 @@
 package lootic.game.interfaces;
 
 import lootic.game.Region;
-import lootic.game.CollisionRules.StaticCollisionRule;
+import lootic.game.interfaces.CollisionRules.StaticCollisionRule;
 
 public interface Collidable extends Positioned {
 	public void addCollisionBox(Region region);

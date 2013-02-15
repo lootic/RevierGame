@@ -2,9 +2,9 @@ package lootic.game;
 
 import java.util.ArrayList;
 
-import lootic.game.CollisionRules.StaticCollisionRule;
 import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Movable;
+import lootic.game.interfaces.CollisionRules.StaticCollisionRule;
 
 public class Terrain extends Decoration implements Collidable {
 	private ArrayList<Region> collisionBoxes = new ArrayList<Region>();

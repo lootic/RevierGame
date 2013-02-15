@@ -2,11 +2,11 @@ package lootic.game;
 
 import java.util.ArrayList;
 
-import lootic.game.CollisionRules.DynamicCollisionRule;
-import lootic.game.CollisionRules.StaticCollisionRule;
 import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Movable;
 import lootic.game.interfaces.Weighing;
+import lootic.game.interfaces.CollisionRules.DynamicCollisionRule;
+import lootic.game.interfaces.CollisionRules.StaticCollisionRule;
 
 public class Thing extends Terrain implements Weighing, Movable {
 

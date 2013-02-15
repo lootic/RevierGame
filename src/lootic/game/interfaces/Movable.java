@@ -1,7 +1,7 @@
 package lootic.game.interfaces;
 
 import lootic.game.Region;
-import lootic.game.CollisionRules.DynamicCollisionRule;
+import lootic.game.interfaces.CollisionRules.DynamicCollisionRule;
 
 public interface Movable extends Positioned, Collidable {
 	public void updatePosition();

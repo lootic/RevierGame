@@ -1,7 +1,6 @@
-package lootic.game;
+package lootic.game.interfaces;
 
-import lootic.game.interfaces.Collidable;
-import lootic.game.interfaces.Movable;
+import lootic.game.Region;
 
 public class CollisionRules {
 	public interface StaticCollisionRule {

@@ -14,6 +14,7 @@ public class Canvas extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 	private boolean isDrawingRegions;
+	private boolean isPaused;
 
 	public Canvas() {
 	}
@@ -22,8 +23,10 @@ public class Canvas extends JPanel {
 		drawables.add(d);
 	}
 
-	public void update() {
-		repaint();
+	public void nextIteration() {
+		if(!isPaused()) {
+			repaint();	
+		}
 	}
 
 	@Override
@@ -36,6 +39,10 @@ public class Canvas extends JPanel {
 		// redraw everything
 		for (Drawable d : drawables) {
 			g2d.drawImage(d.getSprite(), d.getX(), d.getY(), null);
+			
+			//since the following is for debugging, we allow ourselves to use 
+			//instanceof even though it costs cpu-cycles, at least its better
+			//than exceptions. :)
 			if (isDrawingRegions() && d instanceof Collidable) {
 				Collidable c = (Collidable) d;
 				for (Region r : c.getCollisionBoxes()) {
@@ -68,5 +75,13 @@ public class Canvas extends JPanel {
 	 */
 	public void setDrawingRegions(boolean isDrawingRegions) {
 		this.isDrawingRegions = isDrawingRegions;
+	}
+
+	public boolean isPaused() {
+		return isPaused;
+	}
+
+	public void setPaused(boolean paused) {
+		isPaused = paused;
 	}
 }

@@ -2,11 +2,11 @@ package lootic.game.controllers;
 
 import javax.swing.JFrame;
 
-import lootic.game.CollisionRules;
 import lootic.game.Creature;
 import lootic.game.Player;
 import lootic.game.Region;
 import lootic.game.Terrain;
+import lootic.game.interfaces.CollisionRules;
 
 public class Main {
 	public static void main(String[] args) { 
@@ -70,8 +70,8 @@ public class Main {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			canvas.update();
-			physics.update();
+			canvas.nextIteration();
+			physics.nextIteration();
 			Input.reset();
 		}
 
