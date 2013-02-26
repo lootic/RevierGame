@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import lootic.game.Region;
 import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Drawable;
+import lootic.game.models.Region;
 
 public class Canvas extends JPanel {
 	private static final long serialVersionUID = 1L;

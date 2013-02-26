@@ -1,4 +1,4 @@
-package lootic.game;
+package lootic.game.models;
 
 import java.util.ArrayList;
 
@@ -113,7 +113,7 @@ public class Thing extends Terrain implements Weighing, Movable {
 	public void onCollision(Collidable collidable, Region myRegion,
 			Region otherRegion) {
 		for(StaticCollisionRule collisionRule : staticCollisionRules) {
-			collisionRule.onCollision(collidable, this, myRegion, otherRegion);
+			collisionRule.onCollision(collidable, this, otherRegion, myRegion);
 		}
 		
 	}

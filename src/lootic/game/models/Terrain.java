@@ -1,4 +1,4 @@
-package lootic.game;
+package lootic.game.models;
 
 import java.util.ArrayList;
 

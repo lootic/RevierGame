@@ -1,4 +1,4 @@
-package lootic.game;
+package lootic.game.models;
 
 import lootic.game.interfaces.Damaging;
 import lootic.game.interfaces.Hurtable;

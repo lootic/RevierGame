@@ -1,4 +1,4 @@
-package lootic.game;
+package lootic.game.models;
 
 import lootic.game.interfaces.Positioned;
 import lootic.game.interfaces.Sized;
@@ -95,8 +95,7 @@ public class Region implements Sized, Positioned {
 	}
 
 	public boolean isBelow(Region otherRegion) {
-		return otherRegion.getPrevY() + otherRegion.getHeight() - 1 > this
-				.getPrevY();
+		return  this.getPrevY() > otherRegion.getPrevY() + otherRegion.getHeight() -1;
 	}
 
 	public boolean isLeftOf(Region otherRegion) {

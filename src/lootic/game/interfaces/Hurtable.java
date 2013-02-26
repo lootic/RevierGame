@@ -1,6 +1,6 @@
 package lootic.game.interfaces;
 
-import lootic.game.Region;
+import lootic.game.models.Region;
 
 public interface Hurtable {
 	public Iterable<Region> getHurtBoxes();

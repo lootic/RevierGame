@@ -1,4 +1,4 @@
-package lootic.game;
+package lootic.game.models;
 
 import lootic.game.controllers.Input;
 import lootic.game.controllers.InputState;
@@ -56,7 +56,7 @@ public class Player extends Creature {
 
 	private void jump() {
 		System.out.println("jump");
-		fallSpeed = -12000;
+		fallSpeed = -11000;
 		jumpState = JumpState.CAN_NOT_JUMP;
 	}
 
@@ -85,6 +85,5 @@ public class Player extends Creature {
 	@Override
 	public void addCollisionBox(Region r) {
 		super.addCollisionBox(r);
-		// r.setCollisionAction(Region.MOVE_BACK);
 	}
 }
