@@ -11,9 +11,9 @@ public class Terrain extends Decoration implements Collidable {
 	protected ArrayList<StaticCollisionRule> staticCollisionRules = new ArrayList<StaticCollisionRule>();
 
 	@Override
-	public void addCollisionBox(Region r) {
-		r.setOwner(this);
-		collisionBoxes.add(r);
+	public void addCollisionBox(Region r1) {
+		r1.setOwner(this);
+		collisionBoxes.add(r1);
 	}
 
 	@Override

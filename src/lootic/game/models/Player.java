@@ -81,9 +81,4 @@ public class Player extends Creature {
 	public void setJumpState(JumpState jumpState) {
 		this.jumpState = jumpState;
 	}
-
-	@Override
-	public void addCollisionBox(Region r) {
-		super.addCollisionBox(r);
-	}
 }

@@ -18,7 +18,7 @@ public interface Movable extends Positioned, Collidable {
 
 	public int getFallSpeed();
 
-	public void onCollision(Collidable collidable, Region myRegion, Region otherRegion);
+	public void onCollision(Collidable collidable, Region dynamicColliderRegion, Region staticColliderRegion);
 
 	public void addCollisionRule(DynamicCollisionRule collisionRule);
 }

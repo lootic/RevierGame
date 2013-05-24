@@ -6,8 +6,8 @@ import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Looping;
 import lootic.game.interfaces.Movable;
 import lootic.game.interfaces.Weighing;
-import lootic.game.models.Creature;
 import lootic.game.models.Region;
+import lootic.game.models.Creature;
 
 public class Physics implements Looping{
 	private float gravity = 9.82f;

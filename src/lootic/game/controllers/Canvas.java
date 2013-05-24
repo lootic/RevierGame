@@ -1,4 +1,5 @@
 package lootic.game.controllers;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,7 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import lootic.game.interfaces.Collidable;
+import lootic.game.interfaces.Damaging;
 import lootic.game.interfaces.Drawable;
+import lootic.game.interfaces.Hurtable;
 import lootic.game.models.Region;
 
 public class Canvas extends JPanel {
@@ -24,8 +27,8 @@ public class Canvas extends JPanel {
 	}
 
 	public void nextIteration() {
-		if(!isPaused()) {
-			repaint();	
+		if (!isPaused()) {
+			repaint();
 		}
 	}
 
@@ -39,10 +42,10 @@ public class Canvas extends JPanel {
 		// redraw everything
 		for (Drawable d : drawables) {
 			g2d.drawImage(d.getSprite(), d.getX(), d.getY(), null);
-			
-			//since the following is for debugging, we allow ourselves to use 
-			//instanceof even though it costs cpu-cycles, at least its better
-			//than exceptions. :)
+
+			// since the following is for debugging, we allow ourselves to use
+			// instanceof even though it costs cpu-cycles, at least its better
+			// than exceptions. :)
 			if (isDrawingRegions() && d instanceof Collidable) {
 				Collidable c = (Collidable) d;
 				for (Region r : c.getCollisionBoxes()) {
@@ -51,14 +54,27 @@ public class Canvas extends JPanel {
 							r.getHeight());
 				}
 			}
-//			if (d instanceof Destructable) {
-//				Destructable dest = (Destructable) d;
-//				for (Region r : dest.getHurtBoxes()) {
-//					g2d.setColor(Color.RED);
-//					g2d.drawRect((int) r.getX(), (int) r.getY(), r.getWidth(),
-//							r.getHeight());
-//				}
-//			}
+			if (isDrawingRegions() && d instanceof Hurtable) {
+				Hurtable dest = (Hurtable) d;
+				if (dest.getHurtBoxes() != null) {
+					for (Region r : dest.getHurtBoxes()) {
+						g2d.setColor(Color.BLUE);
+						g2d.drawRect((int) r.getX(), (int) r.getY(),
+								r.getWidth(), r.getHeight());
+					}
+				}
+			}
+			if (isDrawingRegions() && d instanceof Damaging) {
+				Damaging dam = (Damaging) d;
+
+				if (dam.getHitBoxes() != null) {
+					for (Region r : dam.getHitBoxes()) {
+						g2d.setColor(Color.RED);
+						g2d.drawRect((int) r.getX(), (int) r.getY(),
+								r.getWidth(), r.getHeight());
+					}
+				}
+			}
 		}
 
 	}

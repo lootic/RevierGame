@@ -8,21 +8,7 @@ public class Creature extends Thing implements Hurtable {
 	protected short down;
 	protected short left;
 	protected short right;
-
-//	public void applyFriction(int amount) {
-//		if (movementSpeed < 0) {
-//			movementSpeed += amount;
-//			if (movementSpeed > 0) {
-//				movementSpeed = 0;
-//			}
-//		} else {
-//			movementSpeed -= amount;
-//			if (movementSpeed < 0) {
-//				movementSpeed = 0;
-//			}
-//		}
-//	}
-
+	
 	@Override
 	public Iterable<Region> getHurtBoxes() {
 		return null;

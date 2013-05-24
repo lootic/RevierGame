@@ -4,11 +4,13 @@ import lootic.game.interfaces.Positioned;
 import lootic.game.interfaces.Sized;
 
 public class Region implements Sized, Positioned {
-	private Positioned owner;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+
+	protected Positioned owner;
+	protected int x;
+	protected int y;
+	protected int width;
+	protected int height;
+	protected RegionType regionType;
 
 	public Region(int x, int y, int width, int height) {
 		this.width = width / 2;
@@ -17,12 +19,24 @@ public class Region implements Sized, Positioned {
 		this.y = y + this.height;
 	}
 
+	public Region(int x, int y, int width, int height,
+			RegionType regionType) {
+		this(x, y, width, height);
+		this.regionType = regionType;
+	}
+
 	public Region(int x, int y, int width, int height, Positioned owner) {
 		this(x, y, width, height);
 		this.owner = owner;
 	}
 
-	private int getCenterX() {
+	public Region(int x, int y, int width, int height,
+			RegionType regionType, Positioned owner) {
+		this(x, y, width, height, regionType);
+		this.owner = owner;
+	}
+
+	public int getCenterX() {
 		if (owner == null) {
 			return x;
 		} else {
@@ -30,7 +44,7 @@ public class Region implements Sized, Positioned {
 		}
 	}
 
-	private int getCenterY() {
+	public int getCenterY() {
 		if (owner == null) {
 			return y;
 		} else {
@@ -82,20 +96,13 @@ public class Region implements Sized, Positioned {
 		}
 	}
 
-	public boolean intersects(Region otherRegion) {
-		int vectorX = otherRegion.getCenterX() - this.getCenterX();
-		int vectorY = otherRegion.getCenterY() - this.getCenterY();
-
-		return (this.width + otherRegion.width > Math.abs(vectorX) && this.height
-				+ otherRegion.height > Math.abs(vectorY));
-	}
-
 	public boolean isAbove(Region otherRegion) {
 		return this.getPrevY() + this.getHeight() - 1 < otherRegion.getPrevY();
 	}
 
 	public boolean isBelow(Region otherRegion) {
-		return  this.getPrevY() > otherRegion.getPrevY() + otherRegion.getHeight() -1;
+		return this.getPrevY() > otherRegion.getPrevY()
+				+ otherRegion.getHeight() - 1;
 	}
 
 	public boolean isLeftOf(Region otherRegion) {
@@ -109,5 +116,18 @@ public class Region implements Sized, Positioned {
 
 	public void setOwner(Positioned owner) {
 		this.owner = owner;
+	}
+	
+
+	public boolean intersects(Region otherRegion) {
+		return intersectsSquare(otherRegion);
+	}
+
+	public boolean intersectsSquare(Region otherRegion) {
+		int vectorX = otherRegion.getCenterX() - this.getCenterX();
+		int vectorY = otherRegion.getCenterY() - this.getCenterY();
+
+		return (this.width + otherRegion.width > Math.abs(vectorX) && this.height
+				+ otherRegion.height > Math.abs(vectorY));
 	}
 }
