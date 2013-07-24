@@ -1,0 +1,37 @@
+Ett metroidvania där man levlar baklänges för att klara spelet.
+
+Du ska som hjälte återställa balans i världen genom att ge nån magi åt någon 
+magisk sten. När du gör så så ger du upp din magi och därför förlorar du en 
+ability vid varje sådan här överföring. En aktiverad sten negerar demonkrafter 
+eller något annat mindre generiskt och gör därför ett aktiverat område fritt på
+monster. Genom att aktivera en sten öppnas också olika passager och olika 
+kombinationer av stenar öppnar olika passager. Varje gång en sten aktiveras måste
+spelaren ge upp en ability. Dock kan spelaren komma tillbaka och hämta abilityn
+ifall den inser att den behövs för ett annat område. När alla stenar är
+aktiverade kan man möta sista bossen. Dock ska det underlätta att ha bra gear
+innan man gör det och vara IWBTG svårt utan att ha hittat all gear i spelet.
+
+Spelet ska vara svårt att speedrunna, ju kortare tid man vill klara spelet
+på desto mindre gear hinner man plocka upp.
+
+Gear finns i Reviervania. Dock ska ingen gear ha enbart positiv verkan utan all
+gear ska vara definerat genom en positiv effekt och en negativ effekt. Gear får 
+man enbart genom att lösa ett pussel, om man har vissa skills eller genom att 
+hitta ett dolt område. Armor, helmet, boots, left hand, right hand, är de slots
+man kan välja.
+
+Exempel:
+Blood Boots - Double all your speed, drain HP at a rate of 1HP/sec
+2ton Armor - Double defense, you can however not jump and walking speed
+is halved.
+
+Abilities
+Utility abilites:
+Double jump
+Dash
+Wall Cling
+Wind Push
+
+Combat abilities:
+8 riktningars skjutability
+sl�ss med ett sv�rd (kan ej ges bort,ses ej som en magisk kraft)
