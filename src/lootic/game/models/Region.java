@@ -10,7 +10,6 @@ public class Region implements Sized, Positioned {
 	protected int y;
 	protected int width;
 	protected int height;
-	protected RegionType regionType;
 
 	public Region(int x, int y, int width, int height) {
 		this.width = width / 2;
@@ -19,20 +18,8 @@ public class Region implements Sized, Positioned {
 		this.y = y + this.height;
 	}
 
-	public Region(int x, int y, int width, int height,
-			RegionType regionType) {
-		this(x, y, width, height);
-		this.regionType = regionType;
-	}
-
 	public Region(int x, int y, int width, int height, Positioned owner) {
 		this(x, y, width, height);
-		this.owner = owner;
-	}
-
-	public Region(int x, int y, int width, int height,
-			RegionType regionType, Positioned owner) {
-		this(x, y, width, height, regionType);
 		this.owner = owner;
 	}
 
@@ -117,7 +104,6 @@ public class Region implements Sized, Positioned {
 	public void setOwner(Positioned owner) {
 		this.owner = owner;
 	}
-	
 
 	public boolean intersects(Region otherRegion) {
 		return intersectsSquare(otherRegion);

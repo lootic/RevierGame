@@ -7,7 +7,7 @@ import lootic.game.interfaces.Looping;
 import lootic.game.interfaces.Movable;
 import lootic.game.interfaces.Weighing;
 import lootic.game.models.Region;
-import lootic.game.models.Creature;
+import lootic.game.models.Thing;
 
 public class Physics implements Looping{
 	private float gravity = 9.82f;
@@ -38,17 +38,22 @@ public class Physics implements Looping{
 	}
 
 	private void checkTerrainCollisions() {
+		if(isPaused) {
+			return;
+		}
 		for (Movable dynamicCollider : movables) {
 			for (Collidable staticCollider : collidables) {
 				for (Region dynamicColliderRegion : dynamicCollider
 						.getCollisionBoxes()) {
 					for (Region staticColliderRegion : staticCollider
 							.getCollisionBoxes()) {
+						//threading from here
 						if (staticColliderRegion
 								.intersects(dynamicColliderRegion)) {
 							staticCollider.onCollision(dynamicCollider, staticColliderRegion, dynamicColliderRegion);
 							dynamicCollider.onCollision(staticCollider, dynamicColliderRegion, staticColliderRegion);
 						}
+						//to here?
 					}
 				}
 			}
@@ -59,9 +64,9 @@ public class Physics implements Looping{
 		return isPaused;
 	}
 
-	public void registerCreature(Creature creature) {
-		registerMovable(creature);
-		registerWeighing(creature);
+	public void registerThing(Thing thing) {
+		registerMovable(thing);
+		registerWeighing(thing);
 	}
 
 	public void registerMovable(Movable m) {
@@ -82,8 +87,8 @@ public class Physics implements Looping{
 
 	public void nextIteration() {
 		if (!isPaused()) {
-			applyMovements();
 			applyGravity();
+			applyMovements();
 			checkTerrainCollisions();
 		}
 	}

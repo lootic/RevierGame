@@ -2,6 +2,7 @@ package lootic.game.interfaces;
 
 public class DecisionRules {
 	public interface DecisionRule {
-		public void makeDecision(/*sensoring*/);
+		public int will(/*senses*/);
+		public void action();
 	}
 }

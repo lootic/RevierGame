@@ -1,84 +1,51 @@
 package lootic.game.models;
 
 import lootic.game.controllers.Input;
-import lootic.game.controllers.InputState;
+import lootic.game.controllers.Actions;
 
 public class Player extends Creature {
 	private int numOfFramesLock; // number of frames we are locked in the
 									// current animation
-	private InputState inputState;
-	private JumpState jumpState;
+	private int leftRightFactor;
+	
+	private int jumpFrames = 0;
 
 	private void readInput() {
 		if (numOfFramesLock > 0) {
 			--numOfFramesLock;
 		} else {
-			inputState = Input.getPreviousInputState();
-			if (inputState == null) {
-				inputState = Input.getInputState();
+			movementSpeed += leftRightFactor * movementSpeedAcceleration;
+			if(jumpFrames > 0){
+				--jumpFrames;
+				System.out.println(jumpFrames);
+				this.setFallSpeed(-8000);
 			}
-			if (inputState == InputState.JUMP) {
-				if (jumpState == JumpState.CAN_LEFT_WALLJUMP)
-					walljumpLeft();
-				else if (jumpState == JumpState.CAN_RIGHT_WALLJUMP) {
-					walljumpRight();
-				} else if (jumpState == JumpState.CAN_JUMP) {
-					jump();
-				} else {
-					// double jump
-				}
-			}
-
-			movementSpeed += Input.getLeftRight() * movementSpeedAcceleration;
 		}
 	}
 
 	@Override
 	public void updatePosition() {
 		readInput();
-		if (Math.abs(movementSpeed) > maxMovementSpeed) {
-			if (movementSpeed > 0)
-				movementSpeed = maxMovementSpeed;
-			else
-				movementSpeed = -maxMovementSpeed;
-		}
-		decX += movementSpeed;
-		decY += fallSpeed;
-		if (Math.abs(decX) >= 1000 || Math.abs(decY) >= 1000) {
-			prevX = x;
-			prevY = y;
-			x += decX / 1000;
-			y += decY / 1000;
-			decX %= 1000;
-			decY %= 1000;
-		}
+		super.updatePosition();
 	}
 
-	private void jump() {
-		System.out.println("jump");
-		fallSpeed = -11000;
-		jumpState = JumpState.CAN_NOT_JUMP;
+	public void setJumpFrames(int numOfFrames) {
+		this.jumpFrames = numOfFrames;
 	}
 
 	private void walljumpLeft() {
 		movementSpeed = -10000;
 		numOfFramesLock = 6;
 		fallSpeed = -8800;
-		jumpState = JumpState.CAN_NOT_JUMP;
 	}
 
 	private void walljumpRight() {
 		movementSpeed = 10000;
 		numOfFramesLock = 6;
 		fallSpeed = -8800;
-		jumpState = JumpState.CAN_NOT_JUMP;
 	}
-
-	public JumpState getJumpState() {
-		return jumpState;
-	}
-
-	public void setJumpState(JumpState jumpState) {
-		this.jumpState = jumpState;
+	
+	public void setLeftRightFactor(int leftRightFactor) {
+			this.leftRightFactor = leftRightFactor;
 	}
 }

@@ -1,46 +1,43 @@
 package lootic.game.controllers;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import lootic.game.interfaces.Controllable;
 
+/**
+ * Abstraction layer for computer input on Windows
+ **/
 public class Input implements KeyListener {
-	private static float up;
-	private static float down;
-	private static float left;
-	private static float right;
-
-	// competing actions are using a common variable so that we can choose which
-	// to do next
-	private static InputState inputState;
-	private static InputState prevInputState;
-
-	// private static InputState prevInputState;
+	private static Controllable controllable;
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			left = 1;
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			right = 1;
+		// System.out.println("hello keyPressed");
+		if (controllable == null) {
+			return;
 		}
-
-		if (inputState == null) { // inputState not yet set for this frame
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				inputState = InputState.JUMP;
-			}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			controllable.inputPressed(Actions.LEFT);
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			controllable.inputPressed(Actions.RIGHT);
+		} else if (e.getKeyCode() == KeyEvent.VK_X) {
+			controllable.inputPressed(Actions.JUMP);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		// System.out.println("hello keyReleased");
+		if (controllable == null) {
+			return;
+		}
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			left = 0;
+			controllable.inputReleased(Actions.LEFT);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			right = 0;
-		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (prevInputState == InputState.JUMP) {
-				prevInputState = null;
-			}
+			controllable.inputReleased(Actions.RIGHT);
+		} else if (e.getKeyCode() == KeyEvent.VK_X) {
+			controllable.inputReleased(Actions.JUMP);
 		}
 	}
 
@@ -48,24 +45,7 @@ public class Input implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 	}
 
-	public static float getLeftRight() {
-		return right - left;
-	}
-
-	public static float getUpDown() {
-		return down - up;
-	}
-
-	public static void reset() {
-		// prevInputState = inputState;
-		inputState = null;
-	}
-
-	public static InputState getInputState() {
-		return inputState;
-	}
-
-	public static InputState getPreviousInputState() {
-		return prevInputState;
+	public static void setControllable(Controllable controllable) {
+		Input.controllable = controllable;
 	}
 }

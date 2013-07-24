@@ -11,13 +11,17 @@ import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Damaging;
 import lootic.game.interfaces.Drawable;
 import lootic.game.interfaces.Hurtable;
+import lootic.game.interfaces.Looping;
+import lootic.game.interfaces.Sized;
+import lootic.game.models.Camera;
 import lootic.game.models.Region;
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements Sized, Looping {
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
+	private ArrayList<Drawable> drawables = new ArrayList<Drawable>(); 
 	private boolean isDrawingRegions;
 	private boolean isPaused;
+	private Camera camera;
 
 	public Canvas() {
 	}
@@ -41,7 +45,7 @@ public class Canvas extends JPanel {
 
 		// redraw everything
 		for (Drawable d : drawables) {
-			g2d.drawImage(d.getSprite(), d.getX(), d.getY(), null);
+			g2d.drawImage(d.getSprite(), d.getX()-camera.getX(), d.getY()-camera.getY(), null);
 
 			// since the following is for debugging, we allow ourselves to use
 			// instanceof even though it costs cpu-cycles, at least its better
@@ -50,7 +54,7 @@ public class Canvas extends JPanel {
 				Collidable c = (Collidable) d;
 				for (Region r : c.getCollisionBoxes()) {
 					g2d.setColor(Color.YELLOW);
-					g2d.drawRect((int) r.getX(), (int) r.getY(), r.getWidth(),
+					g2d.drawRect((int) r.getX()-camera.getX(), (int) r.getY()-camera.getY(), r.getWidth(),
 							r.getHeight());
 				}
 			}
@@ -59,7 +63,7 @@ public class Canvas extends JPanel {
 				if (dest.getHurtBoxes() != null) {
 					for (Region r : dest.getHurtBoxes()) {
 						g2d.setColor(Color.BLUE);
-						g2d.drawRect((int) r.getX(), (int) r.getY(),
+						g2d.drawRect((int) r.getX()-camera.getX(), (int) r.getY()-camera.getY(),
 								r.getWidth(), r.getHeight());
 					}
 				}
@@ -70,7 +74,7 @@ public class Canvas extends JPanel {
 				if (dam.getHitBoxes() != null) {
 					for (Region r : dam.getHitBoxes()) {
 						g2d.setColor(Color.RED);
-						g2d.drawRect((int) r.getX(), (int) r.getY(),
+						g2d.drawRect((int) r.getX()-camera.getX(), (int) r.getY()-camera.getY(),
 								r.getWidth(), r.getHeight());
 					}
 				}
@@ -99,5 +103,9 @@ public class Canvas extends JPanel {
 
 	public void setPaused(boolean paused) {
 		isPaused = paused;
+	}
+	
+	public void setCamera(Camera camera) {
+		this.camera = camera;
 	}
 }

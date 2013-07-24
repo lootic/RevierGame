@@ -3,6 +3,7 @@ package lootic.game.controllers;
 import javax.swing.JFrame;
 
 import lootic.game.interfaces.CollisionRules;
+import lootic.game.models.Camera;
 import lootic.game.models.Creature;
 import lootic.game.models.Player;
 import lootic.game.models.Region;
@@ -16,17 +17,19 @@ public class TestMain {
 		Creature creature = new Creature();
 		Terrain terrain = new Terrain();
 		Terrain water = new Terrain();
+		Camera camera = new Camera();
 		JFrame frame = new JFrame();
 
+		camera.setFocusedObject(player);
+		camera.setObservedArea(canvas);
+		camera.setBounds(0, 0, 1000, 1000);
+		
 		frame.add(canvas);
 		frame.addKeyListener(new Input());
 		player.moveX(40);
 
-		canvas.registerDrawable(terrain);
-		canvas.registerDrawable(water);
-		canvas.registerDrawable(player);
-		canvas.setDrawingRegions(true);
-
+		Input.setControllable(new PlayerController(player));
+		
 		Region r1 = new Region(10, 10, 20, 20);
 		Region r6 = new Region(10, 10, 20, 20);
 
@@ -39,7 +42,6 @@ public class TestMain {
 		creature.addCollisionBox(r6);
 		player.addCollisionBox(r1);
 		
-		player.addCollisionRule(CollisionRules.JUMP_PLAYER);
 		player.addCollisionRule(CollisionRules.WALL_COLLISION_PLAYER);
 
 		terrain.addCollisionBox(r2);
@@ -49,39 +51,44 @@ public class TestMain {
 		terrain.addCollisionRule(CollisionRules.SOLID);
 		terrain.addCollisionRule(CollisionRules.FALLSPEED_RESET);
 		terrain.addCollisionRule(CollisionRules.FRICTION_NORMAL);
+		terrain.addCollisionRule(CollisionRules.FLOOR_COLLISION);
+		terrain.addCollisionRule(CollisionRules.CONVEYOR_BELT_RIGHT);
 		
 		water.addCollisionBox(r7);
 		water.addCollisionRule(CollisionRules.FRICTION_ICE);
 		water.addCollisionRule(CollisionRules.WATER);
 		
-		physics.registerCreature(player);
-		physics.registerCreature(creature);
+		physics.registerThing(player);
+		physics.registerThing(creature);
 		physics.registerCollidable(terrain);
 		physics.registerCollidable(water);
 		
 		canvas.registerDrawable(creature);
+		canvas.registerDrawable(terrain);
+		canvas.registerDrawable(water);
+		canvas.registerDrawable(player);
+		canvas.setDrawingRegions(true);
+		canvas.setCamera(camera);
 
 		frame.setSize(1500, 1000);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		try {
-			Thread.sleep(17);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
 		physics.setPaused(false);
-
+		long i = 0;
 		while (true) {
 			try {
-				Thread.sleep(17);
+				Thread.sleep(17-i);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			//System.out.println(i);
+			//++i;
+			i = System.currentTimeMillis();
 			canvas.nextIteration();
 			physics.nextIteration();
-			Input.reset();
+			i -= System.currentTimeMillis();
+			
 		}
 
 	}

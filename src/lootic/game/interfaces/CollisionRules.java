@@ -1,6 +1,5 @@
 package lootic.game.interfaces;
 
-import lootic.game.models.JumpState;
 import lootic.game.models.Player;
 import lootic.game.models.Region;
 
@@ -37,20 +36,12 @@ public class CollisionRules {
 		}
 	};
 
-	public static final StaticCollisionRule JUMP_PLAYER = new StaticCollisionRule() {
+	public static final StaticCollisionRule FLOOR_COLLISION = new StaticCollisionRule() {
 		@Override
 		public void onCollision(Collidable collidable, Movable movable,
 				Region collidablesRegion, Region movablesRegion) {
-			Player player = (Player) movable;
-			if (movablesRegion.isAbove(collidablesRegion)) {
-				player.setJumpState(JumpState.CAN_JUMP);
-			} else if (movablesRegion.isLeftOf(collidablesRegion)) {
-				player.setJumpState(JumpState.CAN_LEFT_WALLJUMP);
-			} else if (movablesRegion.isRightOf(collidablesRegion)) {
-				player.setJumpState(JumpState.CAN_RIGHT_WALLJUMP);
-			} else if(movablesRegion.isBelow(collidablesRegion)) {
-			} else {
-				player.setJumpState(JumpState.CAN_JUMP);
+			if(movablesRegion.isAbove(collidablesRegion)){
+				movable.setOnGround(true);
 			}
 		}
 	};
@@ -74,7 +65,17 @@ public class CollisionRules {
 			if (movablesRegion.isLeftOf(collidablesRegion)
 					|| movablesRegion.isRightOf(collidablesRegion)) {
 				movable.setFallSpeed(1000);
-				//movable.setMovementSpeed(0);
+			}
+		}
+	};
+	
+	public static final StaticCollisionRule CONVEYOR_BELT_RIGHT = new StaticCollisionRule() {
+		
+		@Override
+		public void onCollision(Collidable collidable, Movable movable,
+				Region collidablesRegion, Region movablesRegion) {
+			if(movablesRegion.isAbove(collidablesRegion)){
+				movable.moveDecX(2500);
 			}
 		}
 	};
@@ -109,7 +110,9 @@ public class CollisionRules {
 		public void onCollision(Collidable collidable, Movable movable,
 				Region collidablesRegion, Region movablesRegion) {
 			
-			movable.setFallSpeed((movable.getFallSpeed()- movable.getFallSpeed()/8));
+			if(movable.getFallSpeed()> 0){
+				movable.setFallSpeed((movable.getFallSpeed()- movable.getFallSpeed()/8));
+			}
 			
 			if(movable.getFallSpeed()> 1500){
 				movable.setFallSpeed(1500);

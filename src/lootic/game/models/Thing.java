@@ -22,6 +22,10 @@ public class Thing extends Terrain implements Weighing, Movable {
 	protected int prevY;
 	protected int decX;
 	protected int decY;
+	protected boolean isOnGround;
+	protected boolean prevWasSetOnGround;
+	protected boolean isBumpingLeft;
+	protected boolean isBumpingRight;
 
 	@Override
 	public int getPrevX() {
@@ -61,7 +65,6 @@ public class Thing extends Terrain implements Weighing, Movable {
 
 	@Override
 	public void moveX(int amount) {
-		System.out.println(amount);
 		x += amount;
 	}
 
@@ -69,7 +72,7 @@ public class Thing extends Terrain implements Weighing, Movable {
 	public void moveY(int amount) {
 		y += amount;
 	}
-	
+
 	@Override
 	public void setFallSpeed(int speed) {
 		this.fallSpeed = speed;
@@ -82,11 +85,19 @@ public class Thing extends Terrain implements Weighing, Movable {
 
 	@Override
 	public void updatePosition() {
+
+		// make x and y additions based on movement constants for this thing
 		movementSpeed += verticalForce * movementSpeedAcceleration;
-		if (Math.abs(movementSpeed) > maxMovementSpeed)
-			movementSpeed = (int) (verticalForce * maxMovementSpeed);
+		if (movementSpeed > maxMovementSpeed) {
+			movementSpeed = (int) (maxMovementSpeed);
+		} else if (movementSpeed < -maxMovementSpeed) {
+			movementSpeed = (int) -(maxMovementSpeed);
+		}
 		decX += movementSpeed;
 		decY += fallSpeed;
+
+		// resolve actual movements in x and y if they are visible and not just
+		// fractions of a pixel
 		if (Math.abs(decX) >= 1000 || Math.abs(decY) >= 1000) {
 			prevX = x;
 			prevY = y;
@@ -95,11 +106,21 @@ public class Thing extends Terrain implements Weighing, Movable {
 			decX %= 1000;
 			decY %= 1000;
 		}
+
+		checkIfAirborn();
+	}
+
+	private void checkIfAirborn() {
+		if (!prevWasSetOnGround) {
+			isOnGround = false;
+		}
+
+		prevWasSetOnGround = false;
 	}
 
 	@Override
 	public void onCollision(Movable movable, Region myRegion, Region otherRegion) {
-		for(DynamicCollisionRule collisionRule : dynamicCollisionRules) {
+		for (DynamicCollisionRule collisionRule : dynamicCollisionRules) {
 			collisionRule.onCollision(this, movable, myRegion, otherRegion);
 		}
 	}
@@ -112,9 +133,50 @@ public class Thing extends Terrain implements Weighing, Movable {
 	@Override
 	public void onCollision(Collidable collidable, Region myRegion,
 			Region otherRegion) {
-		for(StaticCollisionRule collisionRule : staticCollisionRules) {
+		for (StaticCollisionRule collisionRule : staticCollisionRules) {
 			collisionRule.onCollision(collidable, this, otherRegion, myRegion);
 		}
-		
+
+	}
+
+	@Override
+	public void setOnGround(boolean b) {
+		prevWasSetOnGround = b;
+		isOnGround = b;
+	}
+
+	@Override
+	public boolean isOnGround() {
+		return isOnGround;
+	}
+
+	@Override
+	public void moveDecX(int amount) {
+		this.decX += amount;
+	}
+
+	@Override
+	public void moveDecY(int amount) {
+		this.decY += amount;	
+	}
+
+	@Override
+	public void setBumpingLeft(boolean b) {
+		this.isBumpingLeft = b;
+	}
+
+	@Override
+	public void setBumpingRight(boolean b) {
+		this.isBumpingRight = b;
+	}
+
+	@Override
+	public boolean isBumpingLeft() {
+		return isBumpingLeft;
+	}
+
+	@Override
+	public boolean isBumpingRight() {
+		return isBumpingRight;
 	}
 }
