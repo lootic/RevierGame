@@ -108,6 +108,8 @@ public class Thing extends Terrain implements Weighing, Movable {
 		}
 
 		checkIfAirborn();
+		isBumpingLeft=false;
+		isBumpingRight=false;
 	}
 
 	private void checkIfAirborn() {

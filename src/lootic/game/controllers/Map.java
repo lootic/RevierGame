@@ -1,7 +1,5 @@
 package lootic.game.controllers;
 
-import java.io.Serializable;
-
 
 /**
  * A class that controls the loading and unloading of objects in our different
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @author lootic
  *
  */
-public class Map implements Serializable{
+public class Map {
 	
 	private Physics physics;
 	private Life life;
@@ -21,24 +19,20 @@ public class Map implements Serializable{
 		this.life = life;
 		this.canvas = canvas;
 	}
+	
+	public void clear() {
+		/**
+		 * physics.clear();
+		 * life.clear();
+		 * canvas.clear();
+		 */
+	}
 
 	public void load(String fileURL) {
 		
 	}
 	
-	public void unload() {
-		
-	}
-	
 	public void save(String fileURL) {
-		
-	}
-	
-	public void run() {
-		
-	}
-	
-	public void pause() {
 		
 	}
 }

@@ -21,6 +21,10 @@ public class Input implements KeyListener {
 			controllable.inputPressed(Actions.LEFT);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			controllable.inputPressed(Actions.RIGHT);
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			controllable.inputPressed(Actions.UP);
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			controllable.inputPressed(Actions.DOWN);
 		} else if (e.getKeyCode() == KeyEvent.VK_X) {
 			controllable.inputPressed(Actions.JUMP);
 		}
@@ -36,6 +40,10 @@ public class Input implements KeyListener {
 			controllable.inputReleased(Actions.LEFT);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			controllable.inputReleased(Actions.RIGHT);
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			controllable.inputReleased(Actions.UP);
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			controllable.inputReleased(Actions.DOWN);
 		} else if (e.getKeyCode() == KeyEvent.VK_X) {
 			controllable.inputReleased(Actions.JUMP);
 		}

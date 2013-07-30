@@ -19,16 +19,27 @@ public class Physics implements Looping{
 	 */
 
 	/**
-	 * Colliding regions that doesnt collide with each other but
+	 * Colliding regions that doesn't collide with each other but with the movables
 	 */
 	private ArrayList<Collidable> collidables = new ArrayList<Collidable>();
 	private ArrayList<Weighing> weighings = new ArrayList<Weighing>();
+	
+	/**
+	 * colliding regions that collide with everything
+	 */
 	private ArrayList<Movable> movables = new ArrayList<Movable>();
 
 	private void applyGravity() {
 		for (Weighing w : weighings) {
 			w.increaseFallSpeed((int) (gravity * w.getWeight()));
 		}
+	}
+	
+	/**Jump doesn't work properly with low values on gravity.
+	 * @param gravity
+	 */
+	public void setGravity(float gravity){
+		this.gravity = gravity;
 	}
 
 	private void applyMovements() {

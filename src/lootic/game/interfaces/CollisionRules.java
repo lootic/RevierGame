@@ -1,6 +1,5 @@
 package lootic.game.interfaces;
 
-import lootic.game.models.Player;
 import lootic.game.models.Region;
 
 public class CollisionRules {
@@ -42,6 +41,26 @@ public class CollisionRules {
 				Region collidablesRegion, Region movablesRegion) {
 			if(movablesRegion.isAbove(collidablesRegion)){
 				movable.setOnGround(true);
+			}
+		}
+	};
+	
+	public static final StaticCollisionRule WALL_COLLISION_LEFT = new StaticCollisionRule() {
+		@Override
+		public void onCollision(Collidable collidable, Movable movable,
+				Region collidablesRegion, Region movablesRegion) {
+			if(movablesRegion.isRightOf(collidablesRegion)){
+				movable.setBumpingLeft(true);
+			}
+		}
+	};
+	
+	public static final StaticCollisionRule WALL_COLLISION_RIGHT = new StaticCollisionRule() {
+		@Override
+		public void onCollision(Collidable collidable, Movable movable,
+				Region collidablesRegion, Region movablesRegion) {
+			if(movablesRegion.isLeftOf(collidablesRegion)){
+				movable.setBumpingRight(true);
 			}
 		}
 	};

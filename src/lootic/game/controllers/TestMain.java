@@ -22,7 +22,6 @@ public class TestMain {
 
 		camera.setFocusedObject(player);
 		camera.setObservedArea(canvas);
-		camera.setBounds(0, 0, 1000, 1000);
 		
 		frame.add(canvas);
 		frame.addKeyListener(new Input());
@@ -52,7 +51,8 @@ public class TestMain {
 		terrain.addCollisionRule(CollisionRules.FALLSPEED_RESET);
 		terrain.addCollisionRule(CollisionRules.FRICTION_NORMAL);
 		terrain.addCollisionRule(CollisionRules.FLOOR_COLLISION);
-		terrain.addCollisionRule(CollisionRules.CONVEYOR_BELT_RIGHT);
+		terrain.addCollisionRule(CollisionRules.WALL_COLLISION_LEFT);
+		terrain.addCollisionRule(CollisionRules.WALL_COLLISION_RIGHT);
 		
 		water.addCollisionBox(r7);
 		water.addCollisionRule(CollisionRules.FRICTION_ICE);
@@ -82,8 +82,6 @@ public class TestMain {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			//System.out.println(i);
-			//++i;
 			i = System.currentTimeMillis();
 			canvas.nextIteration();
 			physics.nextIteration();

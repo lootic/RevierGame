@@ -10,7 +10,6 @@ public class Camera implements Positioned {
 	private Positioned focusedObject;
 	private Sized observedArea;
 
-	// bounds
 	private int minX = Integer.MIN_VALUE;
 	private int minY = Integer.MIN_VALUE;
 	private int maxX = Integer.MAX_VALUE;
@@ -38,7 +37,9 @@ public class Camera implements Positioned {
 				if (focusedObject.getX() - observedArea.getWidth() / 2 < minX) {
 					return minX;
 				} else if (focusedObject.getX() + observedArea.getWidth() / 2 > maxX) {
-					return maxX;
+					System.out.println("focused:"+focusedObject.getX()+", observed:"+ observedArea.getWidth()+", maxX"+maxX);
+					System.out.println("hello");
+					return maxX- observedArea.getWidth();
 				} else {
 					return focusedObject.getX() - observedArea.getWidth() / 2;
 				}
@@ -76,7 +77,7 @@ public class Camera implements Positioned {
 				}
 			}
 		}
-		return x;
+		return y;
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public class Camera implements Positioned {
 				return focusedObject.getX();
 			}
 		}
-		return x;
+		return y;
 	}
 
 }
