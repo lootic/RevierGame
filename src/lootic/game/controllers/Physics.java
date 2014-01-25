@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Looping;
-import lootic.game.interfaces.Movable;
+import lootic.game.interfaces.Bumping;
 import lootic.game.interfaces.Weighing;
 import lootic.game.models.Region;
 import lootic.game.models.Thing;
@@ -27,7 +27,7 @@ public class Physics implements Looping{
 	/**
 	 * colliding regions that collide with everything
 	 */
-	private ArrayList<Movable> movables = new ArrayList<Movable>();
+	private ArrayList<Bumping> movables = new ArrayList<Bumping>();
 
 	private void applyGravity() {
 		for (Weighing w : weighings) {
@@ -43,7 +43,7 @@ public class Physics implements Looping{
 	}
 
 	private void applyMovements() {
-		for (Movable m : movables) {
+		for (Bumping m : movables) {
 			m.updatePosition();
 		}
 	}
@@ -52,7 +52,7 @@ public class Physics implements Looping{
 		if(isPaused) {
 			return;
 		}
-		for (Movable dynamicCollider : movables) {
+		for (Bumping dynamicCollider : movables) {
 			for (Collidable staticCollider : collidables) {
 				for (Region dynamicColliderRegion : dynamicCollider
 						.getCollisionBoxes()) {
@@ -80,7 +80,7 @@ public class Physics implements Looping{
 		registerWeighing(thing);
 	}
 
-	public void registerMovable(Movable m) {
+	public void registerMovable(Bumping m) {
 		movables.add(m);
 	}
 	

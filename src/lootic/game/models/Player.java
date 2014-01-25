@@ -16,13 +16,12 @@ public class Player extends Creature {
 			--numOfFramesLock;
 		} else {
 			if (airDashFrames > 0) {
-				System.out.println("airDashing");
 				if (Math.abs(upDownFactor) + Math.abs(leftRightFactor) == 2) {
-					this.moveDecX((int) (leftRightFactor * 10000 * 0.7));
-					this.moveDecY((int) (upDownFactor * 17000 * 0.7));
+					this.moveDecX((int) (leftRightFactor * 15000 * 0.7));
+					this.moveDecY((int) (upDownFactor * 15000 * 0.7));
 				} else {
-					this.moveDecX((int) leftRightFactor * 10000);
-					this.moveDecY((int) upDownFactor * 17000);
+					this.moveDecX((int) leftRightFactor * 15000);
+					this.moveDecY((int) upDownFactor * 15000);
 				}
 				this.setFallSpeed(-1000);
 				--airDashFrames;
@@ -38,7 +37,7 @@ public class Player extends Creature {
 			}
 			if (wallJumpFrames > 0) {
 				--wallJumpFrames;
-				this.setFallSpeed(-5000);
+				this.setFallSpeed(-9000);
 			}
 		}
 	}

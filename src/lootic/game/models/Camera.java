@@ -37,20 +37,12 @@ public class Camera implements Positioned {
 				if (focusedObject.getX() - observedArea.getWidth() / 2 < minX) {
 					return minX;
 				} else if (focusedObject.getX() + observedArea.getWidth() / 2 > maxX) {
-					System.out.println("focused:"+focusedObject.getX()+", observed:"+ observedArea.getWidth()+", maxX"+maxX);
-					System.out.println("hello");
-					return maxX- observedArea.getWidth();
+					return maxX - observedArea.getWidth();
 				} else {
 					return focusedObject.getX() - observedArea.getWidth() / 2;
 				}
 			} else {
-				if (focusedObject.getX() < minX) {
-					return minX;
-				} else if (focusedObject.getX() > maxX) {
-					return maxX;
-				} else {
-					return focusedObject.getX();
-				}
+				return focusedObject.getX();
 			}
 		}
 		return x;
@@ -63,20 +55,14 @@ public class Camera implements Positioned {
 				if (focusedObject.getY() - observedArea.getHeight() / 2 < minY) {
 					return minY;
 				} else if (focusedObject.getY() + observedArea.getHeight() / 2 > maxY) {
-					return maxY;
+					return maxY - observedArea.getHeight();
 				} else {
 					return focusedObject.getY() - observedArea.getHeight() / 2;
 				}
 			} else {
-				if (focusedObject.getY() < minY) {
-					return minY;
-				} else if (focusedObject.getY() > maxY) {
-					return maxY;
-				} else {
 					return focusedObject.getY();
 				}
 			}
-		}
 		return y;
 	}
 

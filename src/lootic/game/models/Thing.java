@@ -2,13 +2,14 @@ package lootic.game.models;
 
 import java.util.ArrayList;
 
+import lootic.game.interfaces.Bumping;
 import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Movable;
 import lootic.game.interfaces.Weighing;
 import lootic.game.interfaces.CollisionRules.DynamicCollisionRule;
 import lootic.game.interfaces.CollisionRules.StaticCollisionRule;
 
-public class Thing extends Terrain implements Weighing, Movable {
+public class Thing extends Terrain implements Weighing, Movable, Bumping {
 
 	private ArrayList<DynamicCollisionRule> dynamicCollisionRules = new ArrayList<DynamicCollisionRule>();
 	protected float verticalForce;
@@ -118,13 +119,6 @@ public class Thing extends Terrain implements Weighing, Movable {
 		}
 
 		prevWasSetOnGround = false;
-	}
-
-	@Override
-	public void onCollision(Movable movable, Region myRegion, Region otherRegion) {
-		for (DynamicCollisionRule collisionRule : dynamicCollisionRules) {
-			collisionRule.onCollision(this, movable, myRegion, otherRegion);
-		}
 	}
 
 	@Override

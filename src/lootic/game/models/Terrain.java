@@ -3,7 +3,7 @@ package lootic.game.models;
 import java.util.ArrayList;
 
 import lootic.game.interfaces.Collidable;
-import lootic.game.interfaces.Movable;
+import lootic.game.interfaces.Bumping;
 import lootic.game.interfaces.CollisionRules.StaticCollisionRule;
 
 public class Terrain extends Decoration implements Collidable {
@@ -22,7 +22,7 @@ public class Terrain extends Decoration implements Collidable {
 	}
 
 	@Override
-	public void onCollision(Movable movable, Region myRegion, Region otherRegion) {
+	public void onCollision(Bumping movable, Region myRegion, Region otherRegion) {
 		for (StaticCollisionRule collisionRule : staticCollisionRules) {
 			collisionRule.onCollision(this, movable, myRegion, otherRegion);
 		}

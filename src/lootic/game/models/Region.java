@@ -116,4 +116,25 @@ public class Region implements Sized, Positioned {
 		return (this.width + otherRegion.width > Math.abs(vectorX) && this.height
 				+ otherRegion.height > Math.abs(vectorY));
 	}
+
+	/**
+	 * Calculates the distance to the closest walls between this region and the
+	 * region we want to compare with. If they are intersecting a negative value
+	 * is returned;
+	 * 
+	 * @param otherRegion
+	 *            the region to compare with.
+	 * @return the distance in pixels between the walls.
+	 */
+	public int distance(Region otherRegion) {
+		int xDistance = Math.abs(this.getCenterX() - otherRegion.getCenterX())
+				- (this.width + otherRegion.width);
+		int yDistance = Math.abs(this.getCenterY() - otherRegion.getCenterY())
+				- (this.height + otherRegion.height);
+
+		if (xDistance < 0 && yDistance < 0) {
+			return -1;
+		}
+		return xDistance > yDistance ? xDistance : yDistance;
+	}
 }

@@ -8,7 +8,7 @@ public interface Collidable extends Positioned {
 
 	public Iterable<Region> getCollisionBoxes();
 
-	public void onCollision(Movable movable, Region myRegion, Region otherRegion);
+	public void onCollision(Bumping movable, Region myRegion, Region otherRegion);
 
 	public void addCollisionRule(StaticCollisionRule collisionRule);
 }

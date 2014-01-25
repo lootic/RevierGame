@@ -4,19 +4,19 @@ import lootic.game.models.Region;
 
 public class CollisionRules {
 	public interface StaticCollisionRule {
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping bumping,
 				Region collidablesRegion, Region movablesRegion);
 	};
 
 	public interface DynamicCollisionRule {
-		public void onCollision(Movable movableA, Movable movableB,
+		public void onCollision(Bumping bumpingA, Bumping bumpingB,
 				Region collidablesRegion, Region movablesRegion);
 	};
 
 	public static final StaticCollisionRule SOLID = new StaticCollisionRule() {
 
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 
 			if (movablesRegion.isAbove(collidablesRegion)) {
@@ -37,7 +37,7 @@ public class CollisionRules {
 
 	public static final StaticCollisionRule FLOOR_COLLISION = new StaticCollisionRule() {
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			if(movablesRegion.isAbove(collidablesRegion)){
 				movable.setOnGround(true);
@@ -47,7 +47,7 @@ public class CollisionRules {
 	
 	public static final StaticCollisionRule WALL_COLLISION_LEFT = new StaticCollisionRule() {
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			if(movablesRegion.isRightOf(collidablesRegion)){
 				movable.setBumpingLeft(true);
@@ -57,7 +57,7 @@ public class CollisionRules {
 	
 	public static final StaticCollisionRule WALL_COLLISION_RIGHT = new StaticCollisionRule() {
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			if(movablesRegion.isLeftOf(collidablesRegion)){
 				movable.setBumpingRight(true);
@@ -68,7 +68,7 @@ public class CollisionRules {
 	public static final StaticCollisionRule FALLSPEED_RESET = new StaticCollisionRule() {
 
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			if (movablesRegion.isAbove(collidablesRegion)) {
 				movable.setFallSpeed(0);
@@ -79,7 +79,7 @@ public class CollisionRules {
 	public static final StaticCollisionRule WALL_COLLISION_PLAYER = new StaticCollisionRule() {
 
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			if (movablesRegion.isLeftOf(collidablesRegion)
 					|| movablesRegion.isRightOf(collidablesRegion)) {
@@ -91,7 +91,7 @@ public class CollisionRules {
 	public static final StaticCollisionRule CONVEYOR_BELT_RIGHT = new StaticCollisionRule() {
 		
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			if(movablesRegion.isAbove(collidablesRegion)){
 				movable.moveDecX(2500);
@@ -104,7 +104,7 @@ public class CollisionRules {
 		private static final int friction = 100;
 
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			applyFriction(collidable, movable, collidablesRegion,
 					movablesRegion, friction);
@@ -116,7 +116,7 @@ public class CollisionRules {
 		private static final int friction = 300;
 
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			applyFriction(collidable, movable, collidablesRegion,
 					movablesRegion, friction);
@@ -126,7 +126,7 @@ public class CollisionRules {
 	public static final StaticCollisionRule WATER = new StaticCollisionRule() {
 		
 		@Override
-		public void onCollision(Collidable collidable, Movable movable,
+		public void onCollision(Collidable collidable, Bumping movable,
 				Region collidablesRegion, Region movablesRegion) {
 			
 			if(movable.getFallSpeed()> 0){
@@ -139,7 +139,7 @@ public class CollisionRules {
 		}
 	};
 
-	private static void applyFriction(Collidable collidable, Movable movable,
+	private static void applyFriction(Collidable collidable, Bumping movable,
 			Region collidablesRegion, Region movablesRegion, int friction) {
 		if (movable.getMovementSpeed() < 0) {
 				movable.setMovementSpeed(movable.getMovementSpeed() + friction);

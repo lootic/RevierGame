@@ -1,7 +1,11 @@
 package lootic.game.controllers;
 
+import java.util.ArrayList;
+
 import lootic.game.interfaces.Hurtable;
+import lootic.game.interfaces.Intelligent;
 import lootic.game.interfaces.Looping;
+import lootic.game.interfaces.Percieveble;
 import lootic.game.models.Region;
 
 /**
@@ -14,9 +18,11 @@ import lootic.game.models.Region;
 public class Life implements Looping {
 	
 	private boolean isPaused;
+	private ArrayList<Percieveble> percievebles = new ArrayList<Percieveble>();
+	private ArrayList<Intelligent> intelligents = new ArrayList<Intelligent>();
 	
 	public void nextIteration() {
-		
+		//create new perception for all intelligents from percievebles
 	}
 	
 	public boolean isPaused() {
@@ -32,6 +38,5 @@ public class Life implements Looping {
 	}
 	
 	public void registerHitbox(Region hitbox) {
-		
 	}
 }

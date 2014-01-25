@@ -1,8 +1,10 @@
 package lootic.game.interfaces;
 
-import lootic.game.interfaces.DecisionRules.DecisionRule;
+import lootic.game.interfaces.Behaviours.Behaviour;
+import lootic.game.models.Perception;
 
 public interface Intelligent {
-	public void addDecisionRule(DecisionRule decisionRule);
+	public void addBehaviour(Behaviour decisionRule);
 	public void makeDecision();
+	public void setPerception(Perception perception);
 }

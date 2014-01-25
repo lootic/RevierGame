@@ -45,7 +45,8 @@ public class PlayerController implements Controllable {
 			} else if (player.isAbleToAirDash() && !airdash && !jump) {
 				if (up || down || left || right) {
 					airdash = true;
-					player.setAirDashFrames(9);
+					player.setAirDashFrames(11);
+					player.setMovementSpeed(0);
 				}
 			}
 		}

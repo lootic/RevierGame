@@ -18,8 +18,8 @@ import lootic.game.models.Region;
 
 public class Canvas extends JPanel implements Sized, Looping {
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Drawable> drawables = new ArrayList<Drawable>(); 
-	private boolean isDrawingRegions;
+	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
+	private boolean isDebugMode;
 	private boolean isPaused;
 	private Camera camera;
 
@@ -45,37 +45,40 @@ public class Canvas extends JPanel implements Sized, Looping {
 
 		// redraw everything
 		for (Drawable d : drawables) {
-			g2d.drawImage(d.getSprite(), d.getX()-camera.getX(), d.getY()-camera.getY(), null);
+			g2d.drawImage(d.getSprite(), d.getX() - camera.getX(), d.getY()
+					- camera.getY(), null);
 
 			// since the following is for debugging, we allow ourselves to use
 			// instanceof even though it costs cpu-cycles, at least its better
 			// than exceptions. :)
-			if (isDrawingRegions() && d instanceof Collidable) {
+			if (isDebugMode() && d instanceof Collidable) {
 				Collidable c = (Collidable) d;
 				for (Region r : c.getCollisionBoxes()) {
 					g2d.setColor(Color.YELLOW);
-					g2d.drawRect((int) r.getX()-camera.getX(), (int) r.getY()-camera.getY(), r.getWidth(),
-							r.getHeight());
+					g2d.drawRect((int) r.getX() - camera.getX(), (int) r.getY()
+							- camera.getY(), r.getWidth(), r.getHeight());
 				}
 			}
-			if (isDrawingRegions() && d instanceof Hurtable) {
+			if (isDebugMode() && d instanceof Hurtable) {
 				Hurtable dest = (Hurtable) d;
 				if (dest.getHurtBoxes() != null) {
 					for (Region r : dest.getHurtBoxes()) {
 						g2d.setColor(Color.BLUE);
-						g2d.drawRect((int) r.getX()-camera.getX(), (int) r.getY()-camera.getY(),
-								r.getWidth(), r.getHeight());
+						g2d.drawRect((int) r.getX() - camera.getX(),
+								(int) r.getY() - camera.getY(), r.getWidth(),
+								r.getHeight());
 					}
 				}
 			}
-			if (isDrawingRegions() && d instanceof Damaging) {
+			if (isDebugMode() && d instanceof Damaging) {
 				Damaging dam = (Damaging) d;
 
 				if (dam.getHitBoxes() != null) {
 					for (Region r : dam.getHitBoxes()) {
 						g2d.setColor(Color.RED);
-						g2d.drawRect((int) r.getX()-camera.getX(), (int) r.getY()-camera.getY(),
-								r.getWidth(), r.getHeight());
+						g2d.drawRect((int) r.getX() - camera.getX(),
+								(int) r.getY() - camera.getY(), r.getWidth(),
+								r.getHeight());
 					}
 				}
 			}
@@ -83,18 +86,18 @@ public class Canvas extends JPanel implements Sized, Looping {
 
 	}
 
-	public boolean isDrawingRegions() {
-		return isDrawingRegions;
+	public boolean isDebugMode() {
+		return isDebugMode;
 	}
 
 	/**
 	 * Debugging tool, sets that all the boxes that determines collision should
 	 * be drawn.
 	 * 
-	 * @param isDrawingRegions
+	 * @param isDebugMode
 	 */
-	public void setDrawingRegions(boolean isDrawingRegions) {
-		this.isDrawingRegions = isDrawingRegions;
+	public void setDebug(boolean isDebugMode) {
+		this.isDebugMode = isDebugMode;
 	}
 
 	public boolean isPaused() {
@@ -104,8 +107,9 @@ public class Canvas extends JPanel implements Sized, Looping {
 	public void setPaused(boolean paused) {
 		isPaused = paused;
 	}
-	
+
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+		camera.setObservedArea(this);
 	}
 }

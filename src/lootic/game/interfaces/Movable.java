@@ -21,20 +21,4 @@ public interface Movable extends Positioned, Collidable {
 	public int getMovementSpeed();
 
 	public int getFallSpeed();
-
-	public void onCollision(Collidable collidable, Region dynamicColliderRegion, Region staticColliderRegion);
-
-	public void addCollisionRule(DynamicCollisionRule collisionRule);
-
-	public void setOnGround(boolean b);
-	
-	public boolean isOnGround();
-	
-	public void setBumpingLeft(boolean b);
-	
-	public void setBumpingRight(boolean b);
-	
-	public boolean isBumpingLeft();
-	
-	public boolean isBumpingRight();
 }
