@@ -1,37 +1,16 @@
-Ett metroidvania dÃ¤r man levlar baklÃ¤nges fÃ¶r att klara spelet.
+Ett metroidvania(en form viss form av action-äventyrsspel) där man levlar 
+baklänges för att klara spelet.
 
-Du ska som hjÃ¤lte Ã¥terstÃ¤lla balans i vÃ¤rlden genom att ge nÃ¥n magi Ã¥t nÃ¥gon 
-magisk sten. NÃ¤r du gÃ¶r sÃ¥ sÃ¥ ger du upp din magi och dÃ¤rfÃ¶r fÃ¶rlorar du en 
-ability vid varje sÃ¥dan hÃ¤r Ã¶verfÃ¶ring. En aktiverad sten negerar demonkrafter 
-eller nÃ¥got annat mindre generiskt och gÃ¶r dÃ¤rfÃ¶r ett aktiverat omrÃ¥de fritt pÃ¥
-monster. Genom att aktivera en sten Ã¶ppnas ocksÃ¥ olika passager och olika 
-kombinationer av stenar Ã¶ppnar olika passager. Varje gÃ¥ng en sten aktiveras mÃ¥ste
-spelaren ge upp en ability. Dock kan spelaren komma tillbaka och hÃ¤mta abilityn
-ifall den inser att den behÃ¶vs fÃ¶r ett annat omrÃ¥de. NÃ¤r alla stenar Ã¤r
-aktiverade kan man mÃ¶ta sista bossen. Dock ska det underlÃ¤tta att ha bra gear
-innan man gÃ¶r det och vara IWBTG svÃ¥rt utan att ha hittat all gear i spelet.
+I början av spelet kommer man ha alla de förmågor man kan vänta sig i ett
+sidscrollande äventyrsspel, så som t.ex. dubbelhopp, vägghopp.
 
-Spelet ska vara svÃ¥rt att speedrunna, ju kortare tid man vill klara spelet
-pÃ¥ desto mindre gear hinner man plocka upp.
+Gameplayet kommer bestå av två delar, att röra sig i den öppna världen och att
+slåss mot bossar. När man rör sig i den öppna världen kommer man alltid ha
+möjlighet att ta sig från en punkt till en annan, i valfri ordning, spelet ska
+alltså vara helt olinjärt, dock ska ens möjliga vägar begränsas av vilka 
+förmågor man valt att spara. Vid bossmöten är man dock ofta fast i rummet och
+kan inte ta sig ut. När man lyckats döda bossen så måste man göra sig av med en
+förmåga.
 
-Gear finns i Reviervania. Dock ska ingen gear ha enbart positiv verkan utan all
-gear ska vara definerat genom en positiv effekt och en negativ effekt. Gear fÃ¥r 
-man enbart genom att lÃ¶sa ett pussel, om man har vissa skills eller genom att 
-hitta ett dolt omrÃ¥de. Armor, helmet, boots, left hand, right hand, Ã¤r de slots
-man kan vÃ¤lja.
-
-Exempel:
-Blood Boots - Double all your speed, drain HP at a rate of 1HP/sec
-2ton Armor - Double defense, you can however not jump and walking speed
-is halved.
-
-Abilities
-Utility abilites:
-Double jump
-Dash
-Wall Cling
-Wind Push
-
-Combat abilities:
-8 riktningars skjutability
-slåss med ett svärd (kan ej ges bort,ses ej som en magisk kraft)
+Spelet ska vara intressant att speedrunna, detta är sättet som spelet ska nå
+sitt återspelbarhetsvärde.
