@@ -65,29 +65,4 @@ public class Camera implements Positioned {
 			}
 		return y;
 	}
-
-	@Override
-	public int getPrevY() {
-		if (focusedObject != null) {
-			if (observedArea != null) {
-				return focusedObject.getY() - observedArea.getHeight() / 2;
-			} else {
-				return focusedObject.getY();
-			}
-		}
-		return x;
-	}
-
-	@Override
-	public int getPrevX() {
-		if (focusedObject != null) {
-			if (observedArea != null) {
-				return focusedObject.getX() - observedArea.getWidth() / 2;
-			} else {
-				return focusedObject.getX();
-			}
-		}
-		return y;
-	}
-
 }

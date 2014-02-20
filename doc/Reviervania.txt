@@ -12,5 +12,19 @@ förmågor man valt att spara. Vid bossmöten är man dock ofta fast i rummet och
 kan inte ta sig ut. När man lyckats döda bossen så måste man göra sig av med en
 förmåga.
 
+Man kan senare under spelet välja att komma tillbaka och plocka upp en
+förmåga igen eller byta ut en förmåga mot en annan.
+
+De bossar man klarat kommer vara portaler för att kunna teleportera sig till
+andra bossrum där man klarat en boss, om man dör hamnar man i senaste bossrum 
+där man klarade en boss. Värt att nämna är att i slutet av introduktionsnivån
+möter man en boss och får då en portal som ännu inte leder någonstans.
+
+Spelets olinjära natur och dynamiska svårighetsgrad gör att det lämpar sig väl
+för att vara hyfsat svårt. Man kan pröva alternativa vägar och förmågor för att
+klara ett ställe och straffet för att dö är inte särskilt kraftigt.
+
 Spelet ska vara intressant att speedrunna, detta är sättet som spelet ska nå
-sitt återspelbarhetsvärde.
+sitt återspelbarhetsvärde. Vägval i en speedrun ska vara icke-självklara vid en
+första anblick och gärna vara så pass väl balanserade att speedrunnare har olika
+vägval baserat mestadels på personlig preferens.

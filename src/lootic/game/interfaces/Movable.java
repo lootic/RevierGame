@@ -1,24 +1,24 @@
 package lootic.game.interfaces;
 
-import lootic.game.interfaces.CollisionRules.DynamicCollisionRule;
-import lootic.game.models.Region;
-
 public interface Movable extends Positioned, Collidable {
-	public void updatePosition();
 
-	public void moveX(int amount);
+	public void moveX(float amount);
+
+	public void moveY(float amount);
 	
-	public void moveDecX(int amount);
+	public float getHorizontalSpeed();
 
-	public void moveY(int amount);
-	
-	public void moveDecY(int amount);
+	public float getVerticalSpeed();
 
-	public void setMovementSpeed(int speed);
+	public float getHorizontalAcceleration();
 
-	public void setFallSpeed(int speed);
+	public float getVerticalAcceleration();
 
-	public int getMovementSpeed();
+	public void setHorizontalSpeed(float f);
 
-	public int getFallSpeed();
+	public void setHorizontalAcceleration(float acceleration);
+
+	public void setVerticalSpeed(float speed);
+
+	public void setVerticalAcceleration(float acceleration);
 }

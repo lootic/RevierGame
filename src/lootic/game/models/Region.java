@@ -1,11 +1,12 @@
 package lootic.game.models;
 
+import lootic.game.interfaces.Collidable;
 import lootic.game.interfaces.Positioned;
 import lootic.game.interfaces.Sized;
 
 public class Region implements Sized, Positioned {
 
-	protected Positioned owner;
+	protected Collidable owner;
 	protected int x;
 	protected int y;
 	protected int width;
@@ -18,7 +19,7 @@ public class Region implements Sized, Positioned {
 		this.y = y + this.height;
 	}
 
-	public Region(int x, int y, int width, int height, Positioned owner) {
+	public Region(int x, int y, int width, int height, Collidable owner) {
 		this(x, y, width, height);
 		this.owner = owner;
 	}
@@ -44,22 +45,6 @@ public class Region implements Sized, Positioned {
 		return height * 2;
 	}
 
-	public int getPrevX() {
-		if (owner != null) {
-			return owner.getPrevX() + x - width;
-		} else {
-			return x - width;
-		}
-	}
-
-	public int getPrevY() {
-		if (owner != null) {
-			return owner.getPrevY() + y - height;
-		} else {
-			return y - height;
-		}
-	}
-
 	@Override
 	public int getWidth() {
 		return width * 2;
@@ -83,25 +68,29 @@ public class Region implements Sized, Positioned {
 		}
 	}
 
-	public boolean isAbove(Region otherRegion) {
-		return this.getPrevY() + this.getHeight() - 1 < otherRegion.getPrevY();
+	public boolean isInside(Region otherRegion) {
+		return false;
 	}
 
-	public boolean isBelow(Region otherRegion) {
-		return this.getPrevY() > otherRegion.getPrevY()
-				+ otherRegion.getHeight() - 1;
+	public boolean isNorthOf(Region other) {
+		return this.getY() < other.getY();
 	}
 
-	public boolean isLeftOf(Region otherRegion) {
-		return this.getPrevX() + getWidth() - 1 < otherRegion.getPrevX();
+	public boolean isSouthOf(Region other) {
+		return this.getCenterY() + this.getHeight() > other.getCenterY()
+				+ other.getHeight();
 	}
 
-	public boolean isRightOf(Region otherRegion) {
-		return this.getPrevX() > otherRegion.getPrevX()
-				+ otherRegion.getWidth() - 1;
+	public boolean isWestOf(Region other) {
+		return this.getX() < other.getX();
 	}
 
-	public void setOwner(Positioned owner) {
+	public boolean isEastOf(Region other) {
+		return this.getCenterX() + this.getWidth() > other.getCenterX()
+				+ other.getWidth();
+	}
+
+	public void setOwner(Collidable owner) {
 		this.owner = owner;
 	}
 
@@ -109,7 +98,7 @@ public class Region implements Sized, Positioned {
 		return intersectsSquare(otherRegion);
 	}
 
-	public boolean intersectsSquare(Region otherRegion) {
+	private boolean intersectsSquare(Region otherRegion) {
 		int vectorX = otherRegion.getCenterX() - this.getCenterX();
 		int vectorY = otherRegion.getCenterY() - this.getCenterY();
 
@@ -132,9 +121,6 @@ public class Region implements Sized, Positioned {
 		int yDistance = Math.abs(this.getCenterY() - otherRegion.getCenterY())
 				- (this.height + otherRegion.height);
 
-		if (xDistance < 0 && yDistance < 0) {
-			return -1;
-		}
 		return xDistance > yDistance ? xDistance : yDistance;
 	}
 }

@@ -1,107 +1,118 @@
 package lootic.game.controllers;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import lootic.game.interfaces.Collidable;
+import lootic.game.interfaces.CollisionRule;
 import lootic.game.interfaces.Looping;
-import lootic.game.interfaces.Bumping;
-import lootic.game.interfaces.Weighing;
+import lootic.game.interfaces.Movable;
+import lootic.game.interfaces.SimpleRule;
 import lootic.game.models.Region;
-import lootic.game.models.Thing;
 
-public class Physics implements Looping{
-	private float gravity = 9.82f;
-	private boolean isPaused = true;
+public class Physics implements Looping {
+	@SuppressWarnings("rawtypes")
+	private HashSet<SimpleRule> physicsRules = new HashSet<SimpleRule>();
+	private boolean isPaused;
 
-	/**
-	 * Colliding regions that collide with everything including among
-	 * themselves.
-	 */
-
-	/**
-	 * Colliding regions that doesn't collide with each other but with the movables
-	 */
-	private ArrayList<Collidable> collidables = new ArrayList<Collidable>();
-	private ArrayList<Weighing> weighings = new ArrayList<Weighing>();
-	
-	/**
-	 * colliding regions that collide with everything
-	 */
-	private ArrayList<Bumping> movables = new ArrayList<Bumping>();
-
-	private void applyGravity() {
-		for (Weighing w : weighings) {
-			w.increaseFallSpeed((int) (gravity * w.getWeight()));
-		}
-	}
-	
-	/**Jump doesn't work properly with low values on gravity.
-	 * @param gravity
-	 */
-	public void setGravity(float gravity){
-		this.gravity = gravity;
+	public Physics() {
+		registerPhysicsRule(SOLID);
 	}
 
-	private void applyMovements() {
-		for (Bumping m : movables) {
-			m.updatePosition();
-		}
+	public void registerPhysicsRule(
+			CollisionRule<? extends Collidable, ? extends Collidable> rule) {
+		physicsRules.add(rule);
 	}
 
-	private void checkTerrainCollisions() {
-		if(isPaused) {
-			return;
+	public void registerPhysicsRule(SimpleRule<?> rule) {
+		physicsRules.add(rule);
+	}
+
+	public void unregisterPhysicsRule(SimpleRule<?> rule) {
+		physicsRules.remove(rule);
+	}
+
+	public void unregisterPhysicsRule(
+			CollisionRule<? extends Collidable, ? extends Collidable> rule) {
+		physicsRules.remove(rule);
+	}
+
+	public static final CollisionRule<Collidable, Collidable> DAMAGE = new CollisionRule<Collidable, Collidable>() {
+
+		@Override
+		protected void onCollision(Collidable affector, Collidable affected,
+				Region affectorRegion, Region affectedRegion) {
 		}
-		for (Bumping dynamicCollider : movables) {
-			for (Collidable staticCollider : collidables) {
-				for (Region dynamicColliderRegion : dynamicCollider
-						.getCollisionBoxes()) {
-					for (Region staticColliderRegion : staticCollider
-							.getCollisionBoxes()) {
-						//threading from here
-						if (staticColliderRegion
-								.intersects(dynamicColliderRegion)) {
-							staticCollider.onCollision(dynamicCollider, staticColliderRegion, dynamicColliderRegion);
-							dynamicCollider.onCollision(staticCollider, dynamicColliderRegion, staticColliderRegion);
-						}
-						//to here?
-					}
-				}
+	};
+
+	public static final CollisionRule<Collidable, Movable> SOLID = new CollisionRule<Collidable, Movable>() {
+
+		@Override
+		public void onCollision(Collidable collidable, Movable movable,
+				Region collidablesRegion, Region movablesRegion) {
+			if (movablesRegion.isNorthOf(collidablesRegion)) {
+				movable.setVerticalSpeed(0f);
+				movable.moveY(collidablesRegion.distance(movablesRegion));
+			} else if (movablesRegion.isWestOf(collidablesRegion)) {
+				movable.setHorizontalSpeed(0f);
+				movable.moveX(movablesRegion.distance(collidablesRegion));
+			} else if (movablesRegion.isEastOf(collidablesRegion)) {
+				movable.setHorizontalSpeed(0f);
+				movable.moveX(-movablesRegion.distance(collidablesRegion));
+			} else if (movablesRegion.isSouthOf(collidablesRegion)) {
+				movable.setVerticalSpeed(0f);
+				movable.moveY(movable.getHorizontalSpeed());
+			}
+		}
+	};
+
+	public static final SimpleRule<Movable> GLOBAL_GRAVITY = new SimpleRule<Movable>() {
+
+		private float gravity = 1f;
+
+		@Override
+		public void onTick() {
+			for (Movable m : affecteds) {
+				m.setVerticalSpeed(m.getVerticalSpeed() + gravity);
+			}
+		}
+
+		public void setGravity(float amount) {
+			this.gravity = amount;
+		}
+	};
+
+	public static final SimpleRule<Movable> MOVING = new SimpleRule<Movable>() {
+
+		@Override
+		public void onTick() {
+			for (Movable m : affecteds) {
+				m.setHorizontalSpeed(m.getHorizontalSpeed()
+						+ m.getHorizontalAcceleration());
+				m.setVerticalSpeed(m.getVerticalSpeed()
+						+ m.getVerticalAcceleration());
+
+				m.moveX(m.getHorizontalSpeed());
+				m.moveY(m.getVerticalSpeed());
+			}
+		}
+	};
+
+	@Override
+	public void onTick() {
+		if (!isPaused) {
+			for (SimpleRule<?> rule : physicsRules) {
+				rule.onTick();
 			}
 		}
 	}
 
+	@Override
 	public boolean isPaused() {
 		return isPaused;
 	}
 
-	public void registerThing(Thing thing) {
-		registerMovable(thing);
-		registerWeighing(thing);
-	}
-
-	public void registerMovable(Bumping m) {
-		movables.add(m);
-	}
-	
-	public void registerCollidable(Collidable collidable) {
-		collidables.add(collidable);
-	}
-
-	public void registerWeighing(Weighing w) {
-		weighings.add(w);
-	}
-
+	@Override
 	public void setPaused(boolean paused) {
-		this.isPaused = paused;
+		isPaused = paused;
 	}
-
-	public void nextIteration() {
-		if (!isPaused()) {
-			applyGravity();
-			applyMovements();
-			checkTerrainCollisions();
-		}
-	}
-
 }
